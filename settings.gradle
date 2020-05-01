@@ -1,0 +1,2 @@
+rootProject.name='What To Watch'
+include ':app'
