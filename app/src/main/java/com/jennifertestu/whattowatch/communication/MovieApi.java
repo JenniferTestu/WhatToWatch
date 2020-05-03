@@ -1,5 +1,6 @@
 package com.jennifertestu.whattowatch.communication;
 
+import com.jennifertestu.whattowatch.model.Credits;
 import com.jennifertestu.whattowatch.model.Film;
 import com.jennifertestu.whattowatch.model.FilmsResultats;
 
@@ -11,7 +12,8 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface MovieApi {
-    @GET("movie/{id}")
+
+    @GET("movie/{id}") // @GET("movie/{id}?append_to_response=credits")
     public Call<Film> getFilmWithID(@Path("id") int id,@Query("api_key") String key,@Query("language") String langue);
 
     @GET("movie/{id}/similar")
@@ -19,5 +21,8 @@ public interface MovieApi {
 
     @GET("movie/{id}/recommendations")
     public Call<FilmsResultats> getFilmsRecommendationsWithID(@Path("id") int id, @Query("api_key") String key, @Query("language") String langue);
+
+    @GET("movie/{id}/credits")
+    public Call<Credits> getCredits(@Path("id") int id, @Query("api_key") String key);
 
 }

@@ -12,6 +12,7 @@ import com.jennifertestu.whattowatch.BuildConfig;
 import com.jennifertestu.whattowatch.adapter.FilmAdapter;
 import com.jennifertestu.whattowatch.communication.ConnexionAPI;
 import com.jennifertestu.whattowatch.R;
+import com.jennifertestu.whattowatch.model.Credits;
 import com.jennifertestu.whattowatch.model.Film;
 import com.jennifertestu.whattowatch.model.FilmsResultats;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
@@ -28,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
     // /gradle.properties à ignorer dans Git
     private static final String TMDB_API_KEY = BuildConfig.TMDB_API_KEY;
 
-    private ArrayList<String> al;
     private ArrayList<Film> listeFilms;
     private FilmAdapter filmAdapter;
     private SwipeFlingAdapterView flingContainer;
@@ -78,7 +78,30 @@ public class MainActivity extends AppCompatActivity {
                         filmAdapter = new FilmAdapter(getApplicationContext(), R.layout.item, listeFilms );
 
                         flingContainer.setAdapter(filmAdapter);
-                        filmAdapter.notifyDataSetChanged();
+
+                        for (final Film f:listeFilms) {
+                            ConnexionAPI.getInstance()
+                                    .getMovieApi()
+                                    .getCredits(f.getId(),TMDB_API_KEY)
+                                    .enqueue(new Callback<Credits>(){
+
+                                                 @Override
+                                                 public void onResponse(@NonNull Call<Credits> call, @NonNull Response<Credits> response) {
+                                                     Credits credits = response.body();
+                                                     f.setCredits(credits);
+                                                     Log.e("CREDIT",f.getCredits().getCrew().get(1).getName());
+                                                     filmAdapter.notifyDataSetChanged();
+
+                                                 }
+
+                                                 @Override
+                                                 public void onFailure(Call<Credits> call, Throwable t) {
+
+                                                 }
+                                             });
+                        }
+
+
 
                     }
 

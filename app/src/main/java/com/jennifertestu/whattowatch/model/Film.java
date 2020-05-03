@@ -1,5 +1,6 @@
 package com.jennifertestu.whattowatch.model;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -16,21 +17,22 @@ public class Film implements Serializable {
     // Titre du film
     @SerializedName("title")
     private String titre;
-    // Réalisateur
-    //@SerializedName("userId")
-    private Personne realisateur;
     // Affiche du film
     @SerializedName("poster_path")
     private String urlAffiche;
-    // Année de sortie
-    //private int annee;
+    // Date de sortie
+    @SerializedName("release_date")
+    @Expose
+    private String date;
     // Catégories du films
-
+    @SerializedName("genres")
+    @Expose
+    private List<Genre> genres = null;
     // Longue description
     @SerializedName("overview")
     private String longueDesc;
-    // Liste des acteurs
-    private List<Personne> casting;
+    // Liste des personnes ayant travaillé pour ce film
+    private Credits credits = null;
     // Liste des plateformes
     private List<Offre> listeOffres;
 
@@ -59,14 +61,6 @@ public class Film implements Serializable {
         this.titre = titre;
     }
 
-    public Personne getRealisateur() {
-        return realisateur;
-    }
-
-    public void setRealisateur(Personne realisateur) {
-        this.realisateur = realisateur;
-    }
-
     public String getUrlAffiche() {
         return urlAffiche;
     }
@@ -83,12 +77,12 @@ public class Film implements Serializable {
         this.longueDesc = longueDesc;
     }
 
-    public List<Personne> getCasting() {
-        return casting;
+    public Credits getCredits() {
+        return credits;
     }
 
-    public void setCasting(List<Personne> casting) {
-        this.casting = casting;
+    public void setCredits(Credits credits) {
+        this.credits = credits;
     }
 
     public List<Offre> getListeOffres() {
@@ -97,5 +91,32 @@ public class Film implements Serializable {
 
     public void setListeOffres(List<Offre> listeOffres) {
         this.listeOffres = listeOffres;
+    }
+
+    public List<Genre> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(List<Genre> genres) {
+        this.genres = genres;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getRealisateurs(){
+
+        String result = "";
+        for(int i=0;i<credits.getCrew().size();i++) {
+            if(credits.getCrew().get(i).getJob().equals("Director")){
+                result = result + credits.getCrew().get(i).getName();
+            }
+        }
+        return result;
     }
 }

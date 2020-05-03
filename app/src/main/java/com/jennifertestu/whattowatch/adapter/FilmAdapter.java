@@ -8,10 +8,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.jennifertestu.whattowatch.R;
+import com.jennifertestu.whattowatch.model.Crew;
 import com.jennifertestu.whattowatch.model.Film;
+import com.jennifertestu.whattowatch.model.Genre;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -33,22 +36,45 @@ public class FilmAdapter extends ArrayAdapter<Film> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item, parent, false);
         }
 
-        TextView name = (TextView) convertView.findViewById(R.id.titre);
-        final TextView longue_description = (TextView) convertView.findViewById(R.id.longue_description);
-        ImageView bouton = (ImageView)convertView.findViewById(R.id.info);
+        // Element de la carte
         ImageView image = (ImageView) convertView.findViewById(R.id.affiche);
+        ImageView bouton = (ImageView)convertView.findViewById(R.id.info);
 
+        // Info supplémentaires cachées
+        final ScrollView plus_info = (ScrollView) convertView.findViewById(R.id.plus_info);
+        TextView name = (TextView) convertView.findViewById(R.id.info_titre);
+        TextView date = (TextView) convertView.findViewById(R.id.info_date);
+        TextView categories = (TextView) convertView.findViewById(R.id.info_categories);
+        TextView real = (TextView) convertView.findViewById(R.id.info_real);
+        TextView longue_description = (TextView) convertView.findViewById(R.id.longue_description);
+
+        // Remplissage des info
         name.setText(film_item.getTitre());
+        date.setText("Sortie le "+film_item.getDate());
+        if(film_item.getGenres()!=null) {
+            for (Genre g : film_item.getGenres()) {
+                categories.append(g.getNom() + " ");
+            }
+        }
+
+
+        if(film_item.getCredits()!=null) {
+            real.setText("Réalisé par " + film_item.getRealisateurs());
+        }
+
+
         longue_description.setText(film_item.getLongueDesc());
+
+        // Récupération de l'affiche
         Picasso.with(convertView.getContext()).load("https://image.tmdb.org/t/p/" + "w780" +film_item.getUrlAffiche()).into(image);
         //Picasso.with(convertView.getContext()).load(film_item.getUrlAffiche()).into(image);
         bouton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(longue_description.getVisibility()==View.INVISIBLE){
-                    longue_description.setVisibility(View.VISIBLE);
+                if(plus_info.getVisibility()==View.INVISIBLE){
+                    plus_info.setVisibility(View.VISIBLE);
                 }else {
-                    longue_description.setVisibility(View.INVISIBLE);
+                    plus_info.setVisibility(View.INVISIBLE);
                 }
             }
         });
