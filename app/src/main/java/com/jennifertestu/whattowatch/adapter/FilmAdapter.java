@@ -6,23 +6,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.jennifertestu.whattowatch.R;
-import com.jennifertestu.whattowatch.model.Crew;
 import com.jennifertestu.whattowatch.model.Film;
 import com.jennifertestu.whattowatch.model.Genre;
+import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class FilmAdapter extends ArrayAdapter<Film> {
+public class FilmAdapter extends ArrayAdapter<Film>  {
 
-    Context context;
+    private Context context;
 
     public FilmAdapter(Context context, int resourceId, ArrayList<Film> films) {
         super(context, resourceId, films);
@@ -51,9 +49,11 @@ public class FilmAdapter extends ArrayAdapter<Film> {
         // Remplissage des info
         name.setText(film_item.getTitre());
         date.setText("Sortie le "+film_item.getDate());
+
+        categories.setText("");
         if(film_item.getGenres()!=null) {
-            for (Genre g : film_item.getGenres()) {
-                categories.append(g.getNom() + " ");
+            for (String g : film_item.getGenres()) {
+                categories.append(g + " ");
             }
         }
 
@@ -99,4 +99,5 @@ public class FilmAdapter extends ArrayAdapter<Film> {
 */
         return convertView;
     }
+
 }

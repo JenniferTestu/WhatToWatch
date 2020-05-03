@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Film implements Serializable {
@@ -25,9 +26,9 @@ public class Film implements Serializable {
     @Expose
     private String date;
     // Catégories du films
-    @SerializedName("genres")
+    @SerializedName("genre_ids")
     @Expose
-    private List<Genre> genres = null;
+    private List<Integer> genres = null;
     // Longue description
     @SerializedName("overview")
     private String longueDesc;
@@ -93,11 +94,56 @@ public class Film implements Serializable {
         this.listeOffres = listeOffres;
     }
 
-    public List<Genre> getGenres() {
-        return genres;
+    public List<String> getGenres() {
+        List<String> result = new ArrayList<>();
+
+        for (Integer g:genres) {
+
+            if(g==28) {
+                result.add("Action");
+            }else if(g==12) {
+                result.add("Aventure");
+            }else if(g==16) {
+                result.add("Animation");
+            }else if(g==35) {
+                result.add("Comédie");
+            }else if(g==80) {
+                result.add("Crime");
+            }else if(g==99) {
+                result.add("Documentaire");
+            }else if(g==18) {
+                result.add("Drame");
+            }else if(g==10751) {
+                result.add("Familial");
+            }else if(g==14) {
+                result.add("Fantastique");
+            }else if(g==36) {
+                result.add("Histoire");
+            }else if(g==27) {
+                result.add("Horeur");
+            }else if(g==10402) {
+                result.add("Musique");
+            }else if(g==9648) {
+                result.add("Mystère");
+            }else if(g==10749) {
+                result.add("Romance");
+            }else if(g==878) {
+                result.add("Science-Fiction");
+            }else if(g==10770) {
+                result.add("Téléfilm");
+            }else if(g==53) {
+                result.add("Thriller");
+            }else if(g==10752) {
+                result.add("Guerre");
+            }else if(g==37){
+                    result.add ("Western");
+            }
+        }
+
+        return result;
     }
 
-    public void setGenres(List<Genre> genres) {
+    public void setGenres(List<Integer> genres) {
         this.genres = genres;
     }
 

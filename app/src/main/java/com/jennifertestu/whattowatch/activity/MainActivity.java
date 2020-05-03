@@ -3,9 +3,14 @@ package com.jennifertestu.whattowatch.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.jennifertestu.whattowatch.BuildConfig;
@@ -26,9 +31,9 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    // /gradle.properties à ignorer dans Git
     private static final String TMDB_API_KEY = BuildConfig.TMDB_API_KEY;
 
+    private Film filmPrecedent = null;
     private ArrayList<Film> listeFilms;
     private FilmAdapter filmAdapter;
     private SwipeFlingAdapterView flingContainer;
@@ -38,6 +43,29 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Bouton précédent
+        final ImageButton bouton_precedent = findViewById(R.id.bouton_precedent);
+        bouton_precedent.setClickable(false);
+        bouton_precedent.setColorFilter(Color.GRAY);
+        bouton_precedent.setAlpha(.2f);
+        bouton_precedent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Log.d("Element precedent",filmPrecedent.getTitre());
+                bouton_precedent.setColorFilter(Color.GRAY);
+                bouton_precedent.setAlpha(.2f);
+                bouton_precedent.setClickable(false);
+
+                listeFilms.add(0, filmPrecedent);
+                filmAdapter.notifyDataSetChanged();
+                filmPrecedent = null;
+                flingContainer.removeAllViewsInLayout();
+                flingContainer.forceLayout();
+
+            }
+        });
 
         flingContainer = (SwipeFlingAdapterView)findViewById(R.id.frame);
         listeFilms = new ArrayList<Film>();
@@ -120,6 +148,10 @@ public class MainActivity extends AppCompatActivity {
             public void removeFirstObjectInAdapter() {
                 // this is the simplest way to delete an object from the Adapter (/AdapterView)
                 Log.d("LIST", "removed object!");
+                bouton_precedent.setClickable(true);
+                bouton_precedent.clearColorFilter();
+                bouton_precedent.setAlpha(1f);
+                filmPrecedent = listeFilms.get(0);
                 listeFilms.remove(0);
                 filmAdapter.notifyDataSetChanged();
             }
@@ -152,6 +184,7 @@ public class MainActivity extends AppCompatActivity {
                 view.findViewById(R.id.item_swipe_right_indicator).setAlpha(scrollProgressPercent < 0 ? -scrollProgressPercent : 0);
                 view.findViewById(R.id.item_swipe_left_indicator).setAlpha(scrollProgressPercent > 0 ? scrollProgressPercent : 0);
             }
+
         });
 
 
@@ -162,6 +195,8 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Cliqué!",Toast.LENGTH_SHORT).show();
             }
         });
+
+
 
     }
 
