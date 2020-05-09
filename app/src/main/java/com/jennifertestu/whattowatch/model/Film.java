@@ -21,6 +21,9 @@ public class Film implements Serializable {
     // Affiche du film
     @SerializedName("poster_path")
     private String urlAffiche;
+    // Image d'arrière plan
+    @SerializedName("backdrop_path")
+    private String urlArrierePlan;
     // Date de sortie
     @SerializedName("release_date")
     @Expose
@@ -52,6 +55,14 @@ public class Film implements Serializable {
 
     public void setIdImdb(String idImdb) {
         this.idImdb = idImdb;
+    }
+
+    public String getUrlArrierePlan() {
+        return urlArrierePlan;
+    }
+
+    public void setUrlArrierePlan(String urlArrierePlan) {
+        this.urlArrierePlan = urlArrierePlan;
     }
 
     public String getTitre() {

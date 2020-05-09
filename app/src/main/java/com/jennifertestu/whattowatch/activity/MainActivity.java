@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BlurMaskFilter;
 import android.graphics.Color;
@@ -83,7 +84,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        ImageButton bouton_wishlist = findViewById(R.id.bouton_wishlist);
+        bouton_wishlist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),WishlistActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         flingContainer = (SwipeFlingAdapterView)findViewById(R.id.frame);

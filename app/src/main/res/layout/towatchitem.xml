@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_margin="10dp">
+
+    <RelativeLayout
+        android:id="@+id/view_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000000">
+
+        <ImageView
+            android:id="@+id/delete_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:src="@android:drawable/ic_delete"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/text_supp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/delete_icon"
+            android:text="Supprimer"
+            android:textColor="#fff"
+            android:textSize="13dp"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:id="@+id/vu_icon"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/tick"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/text_vu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/vu_icon"
+            android:text="Vu"
+            android:textColor="#fff"
+            android:textSize="13dp"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/view_foreground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white">
+
+        <ImageView
+            android:id="@+id/thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/titre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/thumbnail"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-medium"
+            android:maxLines="1"
+            android:textColor="#FFFFFF"
+            android:textSize="17dp" />
+
+
+    </RelativeLayout>
+</FrameLayout>

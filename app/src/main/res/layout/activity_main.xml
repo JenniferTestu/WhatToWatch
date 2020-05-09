@@ -63,16 +63,14 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <ToggleButton
-            android:id="@+id/switch1"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:textOff="Séries"
-            android:textOn="Films"
-            android:showText="true"
-            />
+        <ImageButton
+            android:id="@+id/bouton_wishlist"
+            android:layout_margin="10dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ace_of_hearts"
+            android:background="@null"></ImageButton>
 
     </LinearLayout>
     
