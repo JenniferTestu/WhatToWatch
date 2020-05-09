@@ -35,7 +35,7 @@ public class Film implements Serializable {
     // Liste des personnes ayant travaillé pour ce film
     private Credits credits = null;
     // Liste des plateformes
-    private List<Offre> listeOffres;
+    private List<Offre> listeOffres = new ArrayList<Offre>();
 
 
     public int getId() {

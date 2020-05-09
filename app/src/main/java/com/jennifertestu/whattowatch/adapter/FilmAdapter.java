@@ -7,12 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.jennifertestu.whattowatch.R;
 import com.jennifertestu.whattowatch.model.Film;
 import com.jennifertestu.whattowatch.model.Genre;
+import com.jennifertestu.whattowatch.model.Offre;
+import com.jennifertestu.whattowatch.model.Plateforme;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 import com.squareup.picasso.Picasso;
 
@@ -24,7 +27,7 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
 
     public FilmAdapter(Context context, int resourceId, ArrayList<Film> films) {
         super(context, resourceId, films);
-        Log.e("Taille", String.valueOf(films.size()));
+        Log.e("Taille à la crea", String.valueOf(films.size()));
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -36,6 +39,7 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
 
         // Element de la carte
         ImageView image = (ImageView) convertView.findViewById(R.id.affiche);
+        LinearLayout offres = (LinearLayout) convertView.findViewById(R.id.offres);
         ImageView bouton = (ImageView)convertView.findViewById(R.id.info);
 
         // Info supplémentaires cachées
@@ -79,6 +83,20 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
             }
         });
 
+        // Liste des offres
+        Log.e(film_item.getTitre(), "Adapter Liste Null ? "+ String.valueOf(film_item.getListeOffres()==null));
+        Log.e(film_item.getTitre(), "Adapter Liste Empty ? "+ String.valueOf(film_item.getListeOffres().isEmpty()));
+
+        if(film_item.getListeOffres()!=null && film_item.getListeOffres().isEmpty()==false){
+            for (Offre o:film_item.getListeOffres()) {
+                Log.e(film_item.getTitre(), String.valueOf(o.getProviderId()));
+                Log.e(film_item.getTitre(), Plateforme.getById(o.getProviderId()).getNom());
+                //offres.append(Plateforme.getById(o.getProviderId()).getNom()+", ");
+                ImageView icon= new ImageView(getContext());
+                icon.setImageResource(Plateforme.getById(o.getProviderId()).getImage());
+                offres.addView(icon);
+            }
+        }
 /*
         Log.e("Id",film_item.getIdImdb());
         Log.e("Titre",film_item.getTitre());

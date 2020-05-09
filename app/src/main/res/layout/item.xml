@@ -22,7 +22,7 @@
 
         <LinearLayout
             android:layout_width="350dp"
-            android:layout_height="590dp"
+            android:layout_height="610dp"
             android:layout_gravity="center"
             android:orientation="vertical">
 
@@ -117,25 +117,16 @@
 
             </RelativeLayout>
 
-            <TextView
-                android:id="@+id/titre"
+            <LinearLayout
+                android:id="@+id/offres"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10sp"
                 android:gravity="center|left"
                 android:textColor="@android:color/black"
-                android:textSize="20sp"
-                tools:text="hello" />
-
-            <TextView
-                android:id="@+id/divers"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10sp"
-                android:gravity="center|left"
-                android:textColor="@android:color/black"
-                android:textSize="15sp"
-                tools:text="hello" />
+                android:textSize="10sp"
+                android:orientation="horizontal"
+                android:scrollbars="horizontal"/>
 
         </LinearLayout>
 
