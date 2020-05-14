@@ -45,7 +45,7 @@
                     android:visibility="invisible">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
@@ -89,7 +89,6 @@
                             android:id="@+id/info_real"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center|left"
                             android:padding="15sp"
                             android:text="Réalisateur inconnu"
                             android:textColor="@android:color/black"
@@ -98,16 +97,98 @@
                             />
 
                         <TextView
-                            android:id="@+id/longue_description"
+                            android:id="@+id/text_streaming"
+                            android:visibility="gone"
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Streaming"
+                            android:textSize="20sp"
+                            android:textColor="#fff"
+                            android:background="@android:color/darker_gray"
+                            />
+
+                        <androidx.core.widget.NestedScrollView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center|left"
+                            android:orientation="horizontal">
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/streaming"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                android:orientation="horizontal">
+
+                            </androidx.recyclerview.widget.RecyclerView>
+
+                        </androidx.core.widget.NestedScrollView>
+
+                        <TextView
+                            android:id="@+id/text_location"
+                            android:visibility="gone"
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Location"
+                            android:textSize="20sp"
+                            android:textColor="#fff"
+                            android:background="@android:color/darker_gray"
+                            />
+
+                        <androidx.core.widget.NestedScrollView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/location"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+                            </androidx.recyclerview.widget.RecyclerView>
+
+                        </androidx.core.widget.NestedScrollView>
+
+                        <TextView
+                            android:id="@+id/text_achat"
+                            android:visibility="gone"
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Achat"
+                            android:textSize="20sp"
+                            android:textColor="#fff"
+                            android:background="@android:color/darker_gray"
+                            />
+
+                        <androidx.core.widget.NestedScrollView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/achat"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+                            </androidx.recyclerview.widget.RecyclerView>
+
+                        </androidx.core.widget.NestedScrollView>
+
+                        <TextView
+                            android:id="@+id/longue_description"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:padding="15sp"
                             android:text="Description inconnue"
                             android:textColor="@android:color/black"
                             android:textSize="20sp"
-                            android:justificationMode="inter_word"
-                            />
+                            android:justificationMode="inter_word"/>
 
                     </LinearLayout>
 

@@ -1,6 +1,7 @@
 package com.jennifertestu.whattowatch.utils;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.view.View;
 
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -54,14 +55,17 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
             if (dX > 0) {
                 ((ToWatchAdapter.FilmViewHolder) viewHolder).vuIcon.setVisibility(View.VISIBLE);
                 ((ToWatchAdapter.FilmViewHolder) viewHolder).textVu.setVisibility(View.VISIBLE);
+
                 ((ToWatchAdapter.FilmViewHolder) viewHolder).suppIcon.setVisibility(View.GONE);
                 ((ToWatchAdapter.FilmViewHolder) viewHolder).textSupp.setVisibility(View.GONE);
 
             } else {
                 ((ToWatchAdapter.FilmViewHolder) viewHolder).vuIcon.setVisibility(View.GONE);
                 ((ToWatchAdapter.FilmViewHolder) viewHolder).textVu.setVisibility(View.GONE);
+
                 ((ToWatchAdapter.FilmViewHolder) viewHolder).suppIcon.setVisibility(View.VISIBLE);
                 ((ToWatchAdapter.FilmViewHolder) viewHolder).textSupp.setVisibility(View.VISIBLE);
+
             }
 
         getDefaultUIUtil().onDraw(c, recyclerView, foregroundView, dX, dY,

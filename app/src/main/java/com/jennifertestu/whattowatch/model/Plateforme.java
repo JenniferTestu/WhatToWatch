@@ -8,39 +8,40 @@ import java.util.Map;
 
 public enum Plateforme implements Serializable {
 
-    ITUNES("Apple iTunes", 2, R.drawable.itunes),
-    PLAY("Google Play Movies", 3, R.drawable.googleplay),
-    NETFLIX("Netflix", 8, R.drawable.netflix),
-    MUBI("Mubi", 11, R.drawable.mubi),
-    RAKU("Rakuten TV", 35, R.drawable.raku),
-    OCSGO("OCS Go", 56, R.drawable.ocsgo),
-    CANALPLAYVOD("Canal+ VOD", 58, R.drawable.canalvod),
-    BBOX("Bbox VOD", 59, R.drawable.bbox),
-    ORANGE("Orange VOD", 61, R.drawable.orange),
-    MICROSOFT("Microsoft Store", 68, R.drawable.microsoft),
-    AMAZONPRIMEVIDEO("Amazon Prime Video", 119, R.drawable.amazonprime),
-    FILMOTV("Filmo TV", 138, R.drawable.filmotv),
-    MYTF1VOD("MyTF1vod", 145, R.drawable.mytf1vod),
-    SIXPLAY("Sixplay", 147, R.drawable.sixplay),
-    PANTAFLIX("Pantaflix", 177, R.drawable.pantaflix),
-    YOUTUBERED("Youtube Premium", 188, R.drawable.youtubered),
-    YOUTUBE("YouTube", 192, R.drawable.youtube),
-    SFRPLAY("SFR Play", 193, R.drawable.sfrplay),
-    ARTE("Arte", 234, R.drawable.arte),
-    FRANCETV("France TV", 236, R.drawable.francetv),
-    CRUNCHYROLL("Crunchyroll", 283, R.drawable.crunchyroll),
-    LACINETEK("La Cinetek", 310, R.drawable.lacinetek),
-    CINEMASALADEMANDE("Cinemas à la Demande", 324, R.drawable.cinemasalademande),
-    DISNEYPLUS("Disney Plus", 337, R.drawable.disneyplus),
-    CANALSERIES("Canal+ Séries", 345, R.drawable.canalseries),
-    APPLETVPLUS("Apple TV Plus", 350, R.drawable.appletvplus),
-    WAKANIM("Wakanim", 354, R.drawable.wakanim),
-    CANALPLUS("Canal+", 381, R.drawable.canalplus),
-    CANALPLUSDISNEYPLUS("Canal+ Disney+", 382, R.drawable.canalplusdisneyplus); // <- NB: le point-virgule pour mettre fin à la liste des constantes !
+    ITUNES("Apple iTunes", 2, R.drawable.itunes,13),
+    PLAY("Google Play Movies", 3, R.drawable.googleplay,14),
+    NETFLIX("Netflix", 8, R.drawable.netflix,1),
+    MUBI("Mubi", 11, R.drawable.mubi,23),
+    RAKU("Rakuten TV", 35, R.drawable.raku,22),
+    OCSGO("OCS Go", 56, R.drawable.ocsgo,4),
+    CANALPLAYVOD("Canal+ VOD", 58, R.drawable.canalvod,19),
+    BBOX("Bbox VOD", 59, R.drawable.bbox,20),
+    ORANGE("Orange VOD", 61, R.drawable.orange,9),
+    MICROSOFT("Microsoft Store", 68, R.drawable.microsoft,15),
+    AMAZONPRIMEVIDEO("Amazon Prime Video", 119, R.drawable.amazonprime,5),
+    FILMOTV("Filmo TV", 138, R.drawable.filmotv,18),
+    MYTF1VOD("MyTF1vod", 145, R.drawable.mytf1vod,10),
+    SIXPLAY("Sixplay", 147, R.drawable.sixplay,8),
+    PANTAFLIX("Pantaflix", 177, R.drawable.pantaflix,21),
+    YOUTUBERED("Youtube Premium", 188, R.drawable.youtubered,17),
+    YOUTUBE("YouTube", 192, R.drawable.youtube,16),
+    SFRPLAY("SFR Play", 193, R.drawable.sfrplay,7),
+    ARTE("Arte", 234, R.drawable.arte,12),
+    FRANCETV("France TV", 236, R.drawable.francetv,11),
+    CRUNCHYROLL("Crunchyroll", 283, R.drawable.crunchyroll,25),
+    LACINETEK("La Cinetek", 310, R.drawable.lacinetek,24),
+    CINEMASALADEMANDE("Cinemas à la Demande", 324, R.drawable.cinemasalademande,26),
+    DISNEYPLUS("Disney Plus", 337, R.drawable.disneyplus,6),
+    CANALSERIES("Canal+ Séries", 345, R.drawable.canalseries,3),
+    APPLETVPLUS("Apple TV Plus", 350, R.drawable.appletvplus,28),
+    WAKANIM("Wakanim", 354, R.drawable.wakanim,27),
+    CANALPLUS("Canal+", 381, R.drawable.canalplus,2),
+    CANALPLUSDISNEYPLUS("Canal+ Disney+", 382, R.drawable.canalplusdisneyplus,29);
 
     private final String nom;
     private final int id;
     private final int image;
+    private final int place;
 
     private static final Map<Integer, Plateforme> byId = new HashMap<Integer, Plateforme>();
     static {
@@ -51,10 +52,11 @@ public enum Plateforme implements Serializable {
         }
     }
 
-    Plateforme(String nom, int id, int image) {
+    Plateforme(String nom, int id, int image, int place) {
         this.nom = nom;
         this.id = id;
         this.image = image;
+        this.place = place;
     }
 
     public static Plateforme getById(int id) {
@@ -82,4 +84,7 @@ public enum Plateforme implements Serializable {
         return this.image;
     }
 
+    public int getPlace() {
+        return place;
+    }
 }

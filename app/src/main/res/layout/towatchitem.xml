@@ -13,8 +13,8 @@
 
         <ImageView
             android:id="@+id/delete_icon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
@@ -30,13 +30,13 @@
             android:layout_toLeftOf="@id/delete_icon"
             android:text="Supprimer"
             android:textColor="#fff"
-            android:textSize="13dp"
+            android:textSize="16dp"
             android:visibility="gone"/>
 
         <ImageView
             android:id="@+id/vu_icon"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
@@ -52,7 +52,7 @@
             android:layout_toRightOf="@id/vu_icon"
             android:text="Vu"
             android:textColor="#fff"
-            android:textSize="13dp"
+            android:textSize="16dp"
             android:visibility="gone"/>
 
     </RelativeLayout>
