@@ -1,10 +1,13 @@
 package com.jennifertestu.whattowatch.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,7 +22,9 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OffreAdapter extends RecyclerView.Adapter<OffreAdapter.OffreViewHolder>{
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
+public class OffreAdapter extends RecyclerView.Adapter<OffreAdapter.OffreViewHolder> implements  AdapterView.OnItemClickListener{
 
 
     private Context context;
@@ -40,11 +45,21 @@ public class OffreAdapter extends RecyclerView.Adapter<OffreAdapter.OffreViewHol
     }
 
     @Override
-    public void onBindViewHolder(@NonNull OffreViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull OffreViewHolder holder, final int position) {
         final Offre o = listeFilms.get(position);
         holder.prix.setText(String.valueOf(o.getRetailPrice())+"\u20ac");
         holder.format.setText(o.getPresentationType());
         Picasso.with(context).load(Plateforme.getById(o.getProviderId()).getImage()).into(holder.icon);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(listeFilms.get(position).getUrls().getStandardWeb()));
+                i.addFlags(FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(i);
+            }
+        });
     }
 
     @Override
@@ -64,6 +79,12 @@ public class OffreAdapter extends RecyclerView.Adapter<OffreAdapter.OffreViewHol
         listeFilms.add(position, item);
         // notify item added by position
         notifyItemInserted(position);
+    }
+
+    // Quand on clique sur l'élément
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
     }
 
     public class OffreViewHolder extends RecyclerView.ViewHolder {

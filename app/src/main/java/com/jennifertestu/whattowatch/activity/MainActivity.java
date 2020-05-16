@@ -252,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
 
                             ConnexionAPI.getInstance()
                                     .getJWApi()
-                                    .getOffres("{\"age_certifications\":[],\"content_types\":[],\"genres\":[],\"languages\":null,\"min_price\":null,\"matching_offers_only\":null,\"max_price\":null,\"monetization_types\":[],\"presentation_types\":[],\"providers\":[],\"release_year_from\":null,\"release_year_until\":null,\"scoring_filter_types\":null,\"timeline_type\":null,\"sort_by\":null,\"sort_asc\":null,\"query\":\""+f.getTitre()+"\",\"page\":1,\"page_size\":1}")
+                                    .getOffres("{\"age_certifications\":[],\"content_types\":[\"movie\"],\"genres\":[],\"languages\":null,\"min_price\":null,\"matching_offers_only\":null,\"max_price\":null,\"monetization_types\":[],\"presentation_types\":[],\"providers\":[],\"release_year_from\":null,\"release_year_until\":null,\"scoring_filter_types\":null,\"timeline_type\":null,\"sort_by\":null,\"sort_asc\":null,\"query\":\""+f.getTitre()+"\",\"page\":1,\"page_size\":1}")
                                     .enqueue(new Callback<OffresResultats>(){
 
                                         @Override
@@ -261,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
                                             OffresResultats offresResultats = response.body();
                                             Scoring scoring = new Scoring("tmdb:id",Double.valueOf(f.getId()));
 
-                                            Log.e("La liste d'Offre vide ?", String.valueOf(offresResultats.getGroupeOffres().isEmpty()));
+                                            //Log.e("La liste d'Offre vide ?", String.valueOf(offresResultats.getGroupeOffres().isEmpty()));
 
                                             if(offresResultats.getGroupeOffres()!=null || offresResultats.getGroupeOffres().isEmpty()==false || offresResultats.getGroupeOffres().get(0).getScoring().contains(scoring)) {
 

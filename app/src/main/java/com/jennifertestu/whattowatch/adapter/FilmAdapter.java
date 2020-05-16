@@ -59,6 +59,7 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
 
         // Info supplémentaires cachées
         final ScrollView plus_info = (ScrollView) convertView.findViewById(R.id.plus_info);
+        ImageView miniature = (ImageView) convertView.findViewById(R.id.affiche_miniature);
         TextView name = (TextView) convertView.findViewById(R.id.info_titre);
         TextView date = (TextView) convertView.findViewById(R.id.info_date);
         TextView categories = (TextView) convertView.findViewById(R.id.info_categories);
@@ -66,6 +67,7 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
         longue_description = (TextView) convertView.findViewById(R.id.longue_description);
 
         // Remplissage des info
+        //Picasso.with(convertView.getContext()).load("https://image.tmdb.org/t/p/" + "w500" +film_item.getUrlAffiche()).into(miniature);
         name.setText(film_item.getTitre());
 
         // Format de la date
@@ -76,7 +78,6 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
             try {
                 tostring = formatter.parse(film_item.getDate());
             } catch (ParseException | java.text.ParseException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             formatter = new SimpleDateFormat("dd MMMM yyyy",Locale.FRENCH);
@@ -100,7 +101,7 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
 
         longue_description.setText(film_item.getLongueDesc());
 
-        makeTextViewResizable(longue_description,4,"... Continuer",true);
+        makeTextViewResizable(longue_description,5,"Continuer",true);
 
         // Les offres
         OffreAdapter recyclerAdapterStreaming;
@@ -164,6 +165,8 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
 
         // Récupération de l'affiche
         Picasso.with(convertView.getContext()).load("https://image.tmdb.org/t/p/" + "w780" +film_item.getUrlAffiche()).into(image);
+        miniature.setImageDrawable(image.getDrawable());
+
         //Picasso.with(convertView.getContext()).load(film_item.getUrlAffiche()).into(image);
         bouton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -215,7 +218,7 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
                     int lineEndIndex = tv.getLayout().getLineEnd(maxLine - 1);
                     String text = tv.getText().subSequence(0,
                             lineEndIndex - expandText.length() + 1)
-                            + " " + expandText;
+                            + "... " + expandText;
                     tv.setText(text);
                     tv.setMovementMethod(LinkMovementMethod.getInstance());
                     tv.setText(
@@ -273,7 +276,7 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
                                 tv.setText(tv.getTag().toString(),
                                         TextView.BufferType.SPANNABLE);
                                 tv.invalidate();
-                                makeTextViewResizable(tv, 5, "... Continuer",
+                                makeTextViewResizable(tv, 5, "Continuer",
                                         true);
                                 tv.setTextColor(Color.BLACK);
                                 notifyDataSetInvalidated();

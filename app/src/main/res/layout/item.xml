@@ -40,7 +40,6 @@
                     android:id="@+id/plus_info"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:alpha=".8"
                     android:background="#ffff"
                     android:visibility="invisible">
 
@@ -49,52 +48,67 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/info_titre"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center|left"
-                            android:padding="15sp"
-                            android:text="Titre inconnu"
-                            android:textColor="@android:color/black"
-                            android:textSize="25sp"
-                            android:justificationMode="inter_word"
-                            android:textStyle="bold"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/info_date"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center|left"
-                            android:padding="15sp"
-                            android:text="Date inconnue"
-                            android:textColor="@android:color/black"
-                            android:textSize="15sp"
-                            android:justificationMode="inter_word"
-                            />
+                            <ImageView
+                                android:id="@+id/affiche_miniature"
+                                android:layout_width="wrap_content"
+                                android:layout_height="200dp"
+                                android:scaleType="centerCrop"
+                                android:adjustViewBounds="true"/>
 
-                        <TextView
-                            android:id="@+id/info_categories"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center|left"
-                            android:padding="15sp"
-                            android:text="Genres inconnus"
-                            android:textColor="@android:color/black"
-                            android:textSize="20sp"
-                            android:justificationMode="inter_word"
-                            />
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/info_real"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="15sp"
-                            android:text="Réalisateur inconnu"
-                            android:textColor="@android:color/black"
-                            android:textSize="20sp"
-                            android:justificationMode="inter_word"
-                            />
+                                <TextView
+                                    android:id="@+id/info_titre"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center|left"
+                                    android:paddingHorizontal="15sp"
+                                    android:paddingTop="15sp"                                    android:text="Titre inconnu"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"/>
+
+                                <TextView
+                                    android:id="@+id/info_date"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center|left"
+                                    android:paddingHorizontal="15sp"
+                                    android:paddingTop="15sp"                                    android:text="Date inconnue"
+                                    android:textColor="@android:color/black"
+                                    />
+
+                                <TextView
+                                    android:id="@+id/info_categories"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center|left"
+                                    android:paddingHorizontal="15sp"
+                                    android:paddingTop="15sp"                                    android:text="Genres inconnus"
+                                    android:textColor="@android:color/black"
+                                    />
+
+                                <TextView
+                                    android:id="@+id/info_real"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingHorizontal="15sp"
+                                    android:paddingTop="15sp"
+                                    android:text="Réalisateur inconnu"
+                                    android:textColor="@android:color/black"
+                                    />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
 
                         <TextView
                             android:id="@+id/text_streaming"
@@ -103,7 +117,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Streaming"
-                            android:textSize="20sp"
                             android:textColor="#fff"
                             android:background="@android:color/darker_gray"
                             />
@@ -131,7 +144,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Location"
-                            android:textSize="20sp"
                             android:textColor="#fff"
                             android:background="@android:color/darker_gray"
                             />
@@ -159,7 +171,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Achat"
-                            android:textSize="20sp"
                             android:textColor="#fff"
                             android:background="@android:color/darker_gray"
                             />
@@ -187,7 +198,6 @@
                             android:padding="15sp"
                             android:text="Description inconnue"
                             android:textColor="@android:color/black"
-                            android:textSize="20sp"
                             android:justificationMode="inter_word"/>
 
                     </LinearLayout>
