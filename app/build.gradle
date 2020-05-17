@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.jennifertestu.whattowatch"
-        minSdkVersion 16
+        minSdkVersion 22
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -28,6 +28,7 @@ android {
 
 }
 
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -36,6 +37,15 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    // Firebase
+    implementation 'com.google.firebase:firebase-analytics:17.2.2'
+    implementation 'com.google.firebase:firebase-core:16.0.9'
+    implementation 'com.google.firebase:firebase-auth:17.0.0'
+    implementation 'com.google.firebase:firebase-firestore:21.4.3'
+
+    // Compatibilite GIF
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.3'
 
     // Librairie pour l'effet Swipe
     implementation 'com.lorentzos.swipecards:library:1.0.9'
@@ -67,3 +77,6 @@ dependencies {
     //annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
 }
+
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
