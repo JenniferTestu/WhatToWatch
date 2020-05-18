@@ -47,7 +47,11 @@ public class OffreAdapter extends RecyclerView.Adapter<OffreAdapter.OffreViewHol
     @Override
     public void onBindViewHolder(@NonNull OffreViewHolder holder, final int position) {
         final Offre o = listeFilms.get(position);
-        holder.prix.setText(String.valueOf(o.getRetailPrice())+"\u20ac");
+        if(o.getMonetizationType().equalsIgnoreCase("flatrate")){
+            holder.prix.setText(String.valueOf("Forfait"));
+        }else {
+            holder.prix.setText(String.valueOf(o.getRetailPrice()) + "\u20ac");
+        }
         holder.format.setText(o.getPresentationType());
         Picasso.with(context).load(Plateforme.getById(o.getProviderId()).getImage()).into(holder.icon);
 

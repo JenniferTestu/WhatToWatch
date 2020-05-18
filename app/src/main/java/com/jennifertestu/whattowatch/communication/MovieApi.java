@@ -3,6 +3,8 @@ package com.jennifertestu.whattowatch.communication;
 import com.jennifertestu.whattowatch.model.Credits;
 import com.jennifertestu.whattowatch.model.Film;
 import com.jennifertestu.whattowatch.model.FilmsResultats;
+import com.jennifertestu.whattowatch.model.ReleaseResultats;
+import com.jennifertestu.whattowatch.model.VideosResultats;
 
 import java.util.List;
 
@@ -25,4 +27,9 @@ public interface MovieApi {
     @GET("movie/{id}/credits")
     public Call<Credits> getCredits(@Path("id") int id, @Query("api_key") String key);
 
+    @GET("movie/{id}/videos")
+    public Call<VideosResultats> getVideosWithID(@Path("id") int id, @Query("api_key") String key, @Query("language") String langue);
+
+    @GET("movie/{id}/release_dates")
+    public Call<ReleaseResultats> getReleaseDatesWithID(@Path("id") int id, @Query("api_key") String key);
 }

@@ -39,7 +39,8 @@ public class Film implements Serializable {
     private Credits credits = null;
     // Liste des plateformes
     private List<Offre> listeOffres = new ArrayList<Offre>();
-
+    // Liste des videos
+    private List<Video> listeVideos = new ArrayList<Video>();
 
     public int getId() {
         return id;
@@ -175,5 +176,13 @@ public class Film implements Serializable {
             }
         }
         return result;
+    }
+
+    public List<Video> getListeVideos() {
+        return listeVideos;
+    }
+
+    public void setListeVideos(List<Video> listeVideos) {
+        this.listeVideos = listeVideos;
     }
 }

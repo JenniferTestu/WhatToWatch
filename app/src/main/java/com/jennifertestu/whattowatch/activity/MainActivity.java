@@ -17,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.jennifertestu.whattowatch.BuildConfig;
 import com.jennifertestu.whattowatch.adapter.FilmAdapter;
 import com.jennifertestu.whattowatch.communication.ConnexionAPI;
@@ -28,6 +29,7 @@ import com.jennifertestu.whattowatch.model.Offre;
 import com.jennifertestu.whattowatch.model.OffresResultats;
 import com.jennifertestu.whattowatch.model.Plateforme;
 import com.jennifertestu.whattowatch.model.Scoring;
+import com.jennifertestu.whattowatch.model.VideosResultats;
 import com.jennifertestu.whattowatch.utils.BlurImage;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 import com.squareup.picasso.Picasso;
@@ -52,12 +54,25 @@ public class MainActivity extends AppCompatActivity {
     private FilmAdapter filmAdapter;
     private SwipeFlingAdapterView flingContainer;
 
+    FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Deconnexion
+        ImageView deco = findViewById(R.id.deco);
+        deco.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent i = new Intent(MainActivity.this,LoginActivity.class);
+                startActivity(i);
+            }
+        });
 
         // Bouton précédent
         final ImageButton bouton_precedent = findViewById(R.id.bouton_precedent);
@@ -246,6 +261,24 @@ public class MainActivity extends AppCompatActivity {
 
                                         @Override
                                         public void onFailure(Call<Credits> call, Throwable t) {
+
+                                        }
+                                    });
+
+                            ConnexionAPI.getInstance()
+                                    .getMovieApi()
+                                    .getVideosWithID(f.getId(),TMDB_API_KEY,"fr-FR")
+                                    .enqueue(new Callback<VideosResultats>(){
+
+                                        @Override
+                                        public void onResponse(@NonNull Call<VideosResultats> call, @NonNull Response<VideosResultats> response) {
+                                            VideosResultats videosResultats = response.body();
+                                            f.setListeVideos(videosResultats.getResults());
+
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<VideosResultats> call, Throwable t) {
 
                                         }
                                     });

@@ -1,9 +1,11 @@
 package com.jennifertestu.whattowatch.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.icu.text.SimpleDateFormat;
 import android.net.ParseException;
+import android.net.Uri;
 import android.text.SpannableStringBuilder;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
@@ -15,6 +17,7 @@ import android.view.ViewTreeObserver;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -24,6 +27,7 @@ import com.jennifertestu.whattowatch.R;
 import com.jennifertestu.whattowatch.model.Film;
 import com.jennifertestu.whattowatch.model.Offre;
 import com.jennifertestu.whattowatch.model.Plateforme;
+import com.jennifertestu.whattowatch.model.Video;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -31,6 +35,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
+
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class FilmAdapter extends ArrayAdapter<Film>  {
 
@@ -46,7 +52,7 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
     }
 
     //@RequiresApi(api = Build.VERSION_CODES.N)
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         final Film film_item = getItem(position);
 
         if (convertView == null) {
@@ -56,6 +62,7 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
         // Element de la carte
         ImageView image = (ImageView) convertView.findViewById(R.id.affiche);
         ImageView bouton = (ImageView)convertView.findViewById(R.id.info);
+        LinearLayout divers = (LinearLayout)convertView.findViewById(R.id.divers);
 
         // Info supplémentaires cachées
         final ScrollView plus_info = (ScrollView) convertView.findViewById(R.id.plus_info);
@@ -69,6 +76,24 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
         // Remplissage des info
         //Picasso.with(convertView.getContext()).load("https://image.tmdb.org/t/p/" + "w500" +film_item.getUrlAffiche()).into(miniature);
         name.setText(film_item.getTitre());
+
+        // Liste les videos
+        for (final Video video: film_item.getListeVideos()) {
+            TextView tv = new TextView(context);
+            tv.setText(video.getType());
+            tv.setPadding(30,0,0,0);
+            tv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse("https://www.youtube.com/watch?v="+video.getKey()));
+                    i.addFlags(FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(i);
+                }
+            });
+            //tv.setCompoundDrawablesWithIntrinsicBounds(context.getResources().getDrawable(R.id.ic),null,null,null);
+            divers.addView(tv);
+        }
 
         // Format de la date
         SimpleDateFormat formatter = null;
