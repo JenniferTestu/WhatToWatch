@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
         inscription = findViewById(R.id.inscription);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
-
+/*
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         };
-
+*/
         connexion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,10 +92,11 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
+/*
     @Override
     protected void onStart() {
         super.onStart();
         mFirebaseAuth.addAuthStateListener(mAuthStateListener);
     }
+ */
 }
