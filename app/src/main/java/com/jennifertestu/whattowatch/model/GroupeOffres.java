@@ -44,12 +44,13 @@ public class GroupeOffres implements Serializable
     @SerializedName("offers")
     @Expose
     private List<Offre> offres = new ArrayList<Offre>();
-    @SerializedName("scoring")
+    @SerializedName("external_ids")
     @Expose
-    private List<Scoring> scoring = null;
+    private List<ExternalID> external_ids = null;
     @SerializedName("cinema_release_date")
     @Expose
     private String cinemaReleaseDate;
+
 
     public String getJwEntityId() {
         return jwEntityId;
@@ -194,16 +195,16 @@ public class GroupeOffres implements Serializable
         return this;
     }
 
-    public List<Scoring> getScoring() {
-        return scoring;
+    public List<ExternalID> getExternalIDs() {
+        return external_ids;
     }
 
-    public void setScoring(List<Scoring> scoring) {
-        this.scoring = scoring;
+    public void setExternalIDs(List<ExternalID> external_ids) {
+        this.external_ids = external_ids;
     }
 
-    public GroupeOffres withScoring(List<Scoring> scoring) {
-        this.scoring = scoring;
+    public GroupeOffres withExternalIDs(List<ExternalID> external_ids) {
+        this.external_ids = external_ids;
         return this;
     }
 

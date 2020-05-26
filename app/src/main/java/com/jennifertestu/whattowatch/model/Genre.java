@@ -72,4 +72,8 @@ public class Genre {
         }
     }
 */
+
+    public String getNom() {
+        return nom;
+    }
 }

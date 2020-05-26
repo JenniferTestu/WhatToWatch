@@ -2,11 +2,10 @@ package com.jennifertestu.whattowatch.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BlurMaskFilter;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -18,17 +17,17 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.gson.Gson;
 import com.jennifertestu.whattowatch.BuildConfig;
 import com.jennifertestu.whattowatch.adapter.FilmAdapter;
 import com.jennifertestu.whattowatch.communication.ConnexionAPI;
 import com.jennifertestu.whattowatch.R;
 import com.jennifertestu.whattowatch.model.Credits;
 import com.jennifertestu.whattowatch.model.Film;
-import com.jennifertestu.whattowatch.model.FilmsResultats;
-import com.jennifertestu.whattowatch.model.Offre;
+import com.jennifertestu.whattowatch.model.GroupeOffres;
 import com.jennifertestu.whattowatch.model.OffresResultats;
-import com.jennifertestu.whattowatch.model.Plateforme;
-import com.jennifertestu.whattowatch.model.Scoring;
+import com.jennifertestu.whattowatch.model.Recherche;
+import com.jennifertestu.whattowatch.model.ExternalID;
 import com.jennifertestu.whattowatch.model.VideosResultats;
 import com.jennifertestu.whattowatch.utils.BlurImage;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
@@ -36,8 +35,6 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -74,6 +71,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Ecran de recherche
+        ImageButton recherche = findViewById(R.id.recherche);
+        recherche.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this,RechercheActivity.class);
+                startActivity(i);
+            }
+        });
+
         // Bouton précédent
         final ImageButton bouton_precedent = findViewById(R.id.bouton_precedent);
         bouton_precedent.setClickable(false);
@@ -83,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Log.d("Element precedent",filmPrecedent.getTitre());
                 bouton_precedent.setColorFilter(Color.GRAY);
                 bouton_precedent.setAlpha(.2f);
                 bouton_precedent.setClickable(false);
@@ -138,14 +144,11 @@ public class MainActivity extends AppCompatActivity {
 */
 
         recupererFilms();
-
+        filmAdapter = new FilmAdapter(getApplicationContext(), R.layout.item, listeFilms);
+        flingContainer.setAdapter(filmAdapter);
+        filmAdapter.notifyDataSetChanged();
 
         Log.e("Taille dans le Main", String.valueOf(listeFilms.size()));
-
-
-
-
-
 
 
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
@@ -183,6 +186,8 @@ public class MainActivity extends AppCompatActivity {
                 //filmAdapter.notifyDataSetChanged();
                 Log.d("LIST", "notified");
                 //i++;
+                filmAdapter.notifyDataSetChanged();
+                changerBackground();
             }
 
             @Override
@@ -234,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void recupererFilms(){
-
+/*
         ConnexionAPI.getInstance()
                 .getMovieApi()
                 .getFilmsRecommendationsWithID(744,TMDB_API_KEY,"fr-FR")
@@ -294,8 +299,6 @@ public class MainActivity extends AppCompatActivity {
                                             OffresResultats offresResultats = response.body();
                                             Scoring scoring = new Scoring("tmdb:id",Double.valueOf(f.getId()));
 
-                                            //Log.e("La liste d'Offre vide ?", String.valueOf(offresResultats.getGroupeOffres().isEmpty()));
-
                                             if(offresResultats.getGroupeOffres()!=null || offresResultats.getGroupeOffres().isEmpty()==false || offresResultats.getGroupeOffres().get(0).getScoring().contains(scoring)) {
 
                                                 f.setListeOffres(offresResultats.getGroupeOffres().get(0).getOffres());
@@ -307,14 +310,6 @@ public class MainActivity extends AppCompatActivity {
                                                 Log.e("Dans le IF ?", "OUI");
                                                 filmAdapter.notifyDataSetChanged();
 
-                                                    /*
-                                                    for (Offre o : f.getListeOffres()) {
-                                                        //Log.e("OFFRES",o.getUrls().getStandardWeb());
-                                                        Log.e(f.getTitre(), String.valueOf(o.getProviderId()));
-                                                        Log.e(f.getTitre(), Plateforme.getById(o.getProviderId()).getNom());
-
-                                                    }
-                                                    */
                                             }else {
                                                 Log.e("ELSE","SORTIE");
                                             }
@@ -332,7 +327,6 @@ public class MainActivity extends AppCompatActivity {
                         }
 
 
-                        //listeFilms = resultats;
                         filmAdapter = new FilmAdapter(getApplicationContext(), R.layout.item, listeFilms );
                         flingContainer.setAdapter(filmAdapter);
                         filmAdapter.notifyDataSetChanged();
@@ -348,36 +342,193 @@ public class MainActivity extends AppCompatActivity {
 
                 });
 
+*/
+
+        Recherche recherche;
+        final SharedPreferences mPrefs = getSharedPreferences("Recherche", 0);
+        // Récupérer la recherche et la convertir en objet Recherche
+        Gson gson = new Gson();
+        String json = mPrefs.getString("Champs", "");
+
+        if(json.equals("")){
+
+            Intent i = new Intent(MainActivity.this,RechercheActivity.class);
+            finish();
+            startActivity(i);
+
+        }else {
+
+            ConnexionAPI.getInstance()
+                    .getJWApi()
+                    .getOffres(json)
+                    .enqueue(new Callback<OffresResultats>() {
+
+                        @Override
+                        public void onResponse(Call<OffresResultats> call, Response<OffresResultats> response) {
+                            Log.e("Je suis", "dans les offres");
+
+                            OffresResultats offresResultats = response.body();
+
+                            for (GroupeOffres go : offresResultats.getGroupeOffres()) {
+
+                                final String type;
+                                if (go.getObjectType().matches("show")){
+                                    type="tv";
+                                } else {
+                                    type="movie";
+                                }
+
+                                ConnexionAPI.getInstance()
+                                        .getJWApi()
+                                        .getDetails(go.getObjectType(),go.getId())
+                                        .enqueue(new Callback<GroupeOffres>() {
+                                            @Override
+                                            public void onResponse(Call<GroupeOffres> call, Response<GroupeOffres> response) {
+                                                Log.e("Je suis", "dans le details");
+
+                                                final GroupeOffres resultats = response.body();
+
+                                                int tmdb_id = 0; // TMDB id
+
+                                                for (ExternalID s : resultats.getExternalIDs()) {
+                                                    if (s.getProvider().equals("tmdb"))
+                                                        tmdb_id = Integer.parseInt(s.getId());
+                                                }
+
+                                                if (tmdb_id != 0) {
+                                                    ConnexionAPI.getInstance()
+                                                            .getMovieApi()
+                                                            .getFilmWithID(type,tmdb_id, TMDB_API_KEY, "fr-FR")
+                                                            .enqueue(new Callback<Film>() {
+                                                                @Override
+                                                                public void onResponse(@NonNull Call<Film> call, @NonNull Response<Film> response) {
+                                                                    Log.e("Je suis", "dans le film with id");
+
+                                                                    if(response.isSuccessful()) {
+
+                                                                        final Film film = response.body();
+                                                                        film.setListeOffres(resultats.getOffres());
+                                                                        film.setType(resultats.getObjectType());
+                                                                        //System.out.println(film);
+/*
+                                                                        ConnexionAPI.getInstance()
+                                                                                .getMovieApi()
+                                                                                .getVideosWithID(type, film.getId(), TMDB_API_KEY, "fr-FR")
+                                                                                .enqueue(new Callback<VideosResultats>() {
+
+                                                                                    @Override
+                                                                                    public void onResponse(@NonNull Call<VideosResultats> call, @NonNull Response<VideosResultats> response) {
+                                                                                        VideosResultats videosResultats = response.body();
+                                                                                        film.setListeVideos(videosResultats.getResults());
+
+                                                                                    }
+
+                                                                                    @Override
+                                                                                    public void onFailure(Call<VideosResultats> call, Throwable t) {
+                                                                                        Log.e("Erreur", "Videos du film");
+                                                                                        t.printStackTrace();
+                                                                                    }
+                                                                                });
+
+                                                                        ConnexionAPI.getInstance()
+                                                                                .getMovieApi()
+                                                                                .getCredits(type, film.getId(), TMDB_API_KEY)
+                                                                                .enqueue(new Callback<Credits>() {
+
+                                                                                    @Override
+                                                                                    public void onResponse(@NonNull Call<Credits> call, @NonNull Response<Credits> response) {
+                                                                                        Log.e("Je suis", "dans les credits");
+
+                                                                                        Credits credits = response.body();
+                                                                                        film.setCredits(credits);
+
+                                                                                    }
+
+                                                                                    @Override
+                                                                                    public void onFailure(Call<Credits> call, Throwable t) {
+                                                                                        Log.e("Erreur", "Credit du film");
+                                                                                        t.printStackTrace();
+                                                                                    }
+                                                                                });
+*/
+                                                                        listeFilms.add(film);
+                                                                        filmAdapter.notifyDataSetChanged();
+                                                                    }
+                                                                }
+
+                                                                @Override
+                                                                public void onFailure(@NonNull Call<Film> call, @NonNull Throwable t) {
+                                                                    Log.e("Erreur", "Details du film");
+                                                                    t.printStackTrace();
+                                                                }
+                                                            });
+                                                }
+
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<GroupeOffres> call, Throwable t) {
+                                                Log.e("Erreur", "Recherche des details de films");
+                                                t.printStackTrace();
+                                            }
+                                        });
+
+                            }
+
+
+                            //filmAdapter = new FilmAdapter(getApplicationContext(), R.layout.item, listeFilms);
+                            //flingContainer.setAdapter(filmAdapter);
+                            //filmAdapter.notifyDataSetChanged();
+                            Log.e("Main","Taille de "+String.valueOf(listeFilms.size()));
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<OffresResultats> call, Throwable t) {
+                            Log.e("Erreur", "Recherche des films");
+                            t.printStackTrace();
+                        }
+                    });
+
+        }
+
 
     }
 
-    public void changerBackground(){
-        final ImageView background = findViewById(R.id.background);
+    public void changerBackground() {
 
-        //Configure target for
-        Target target = new Target() {
-            @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                background.setImageBitmap(BlurImage.fastblur(bitmap, 1f, BLUR_PRECENTAGE));
-            }
+        if (listeFilms.size()>0) {
+            final ImageView background = findViewById(R.id.background);
 
-            @Override
-            public void onBitmapFailed(Drawable errorDrawable) {
-                background.setImageResource(R.mipmap.ic_launcher);
+            //Configure target for
+            Target target = new Target() {
+                @Override
+                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                    background.setImageBitmap(BlurImage.fastblur(bitmap, 1f, BLUR_PRECENTAGE));
+                }
 
-            }
+                @Override
+                public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                    //background.setImageResource(R.mipmap.ic_launcher);
 
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {
+                }
 
-            }
-        };
+                @Override
+                public void onPrepareLoad(Drawable placeHolderDrawable) {
 
-        background.setTag(target);
-        Picasso.with(this)
-                .load("https://image.tmdb.org/t/p/" + "w780" +listeFilms.get(0).getUrlAffiche())
-                .into(target);
+                }
+            };
+
+            background.setTag(target);
+            Picasso.get()
+                    .load("https://image.tmdb.org/t/p/" + "w780" + listeFilms.get(0).getUrlAffiche())
+                    .into(target);
+        }
     }
 
+    public void onResume(){
+        super.onResume();
+        changerBackground();
+    }
 }
 

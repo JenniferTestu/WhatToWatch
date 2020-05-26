@@ -2,7 +2,9 @@ package com.jennifertestu.whattowatch.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.icu.text.SimpleDateFormat;
 import android.net.ParseException;
 import android.net.Uri;
@@ -25,10 +27,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.jennifertestu.whattowatch.R;
 import com.jennifertestu.whattowatch.model.Film;
+import com.jennifertestu.whattowatch.model.Genre;
 import com.jennifertestu.whattowatch.model.Offre;
 import com.jennifertestu.whattowatch.model.Plateforme;
 import com.jennifertestu.whattowatch.model.Video;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -60,13 +65,14 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
         }
 
         // Element de la carte
-        ImageView image = (ImageView) convertView.findViewById(R.id.affiche);
+        final ImageView image = (ImageView) convertView.findViewById(R.id.affiche);
         ImageView bouton = (ImageView)convertView.findViewById(R.id.info);
+        TextView type = (TextView)convertView.findViewById(R.id.type);
         LinearLayout divers = (LinearLayout)convertView.findViewById(R.id.divers);
 
         // Info supplémentaires cachées
         final ScrollView plus_info = (ScrollView) convertView.findViewById(R.id.plus_info);
-        ImageView miniature = (ImageView) convertView.findViewById(R.id.affiche_miniature);
+        final ImageView miniature = (ImageView) convertView.findViewById(R.id.affiche_miniature);
         TextView name = (TextView) convertView.findViewById(R.id.info_titre);
         TextView date = (TextView) convertView.findViewById(R.id.info_date);
         TextView categories = (TextView) convertView.findViewById(R.id.info_categories);
@@ -75,10 +81,33 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
 
         // Remplissage des info
         //Picasso.with(convertView.getContext()).load("https://image.tmdb.org/t/p/" + "w500" +film_item.getUrlAffiche()).into(miniature);
-        name.setText(film_item.getTitre());
+        if(film_item.getType().matches("show")) {
+            name.setText(film_item.getNomSerie());
+        }else {
+            name.setText(film_item.getTitre());
+        }
+        Picasso.get()
+                .load("https://image.tmdb.org/t/p/" + "w780" +film_item.getUrlAffiche())
+                .into(image,
+                new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        //miniature.setImageDrawable(image.getDrawable());
+                        Picasso.get().load("https://image.tmdb.org/t/p/" + "w780" +film_item.getUrlAffiche())
+                                .into(miniature);
+
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        Log.e("Image","Echec");
+
+                    }
+
+                });
 
         // Liste les videos
-        for (final Video video: film_item.getListeVideos()) {
+        for (final Video video: film_item.getListeVideos().getResults()) {
             TextView tv = new TextView(context);
             tv.setText(video.getType());
             tv.setPadding(30,0,0,0);
@@ -101,7 +130,11 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
             formatter = new SimpleDateFormat("yyyy-MM-dd");
             Date tostring =null;
             try {
-                tostring = formatter.parse(film_item.getDate());
+                if(film_item.getType().matches("show")) {
+                    tostring = formatter.parse(film_item.getDate_premier_ep());
+                }else{
+                    tostring = formatter.parse(film_item.getDate());
+                }
             } catch (ParseException | java.text.ParseException e) {
                 e.printStackTrace();
             }
@@ -114,16 +147,18 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
 
         categories.setText("");
         if(film_item.getGenres()!=null) {
-            for (String g : film_item.getGenres()) {
-                categories.append(g + " ");
+            for (Genre g : film_item.getGenres()) {
+                categories.append(g.getNom() + " ");
             }
         }
 
-
-        if(film_item.getCredits()!=null) {
-            real.setText("Réalisé par " + film_item.getRealisateurs());
+        if(film_item.getType().matches("movie")) {
+            if (film_item.getCredits() != null) {
+                real.setText("Réalisé par " + film_item.getRealisateurs());
+            }
+        }else {
+            real.setText("Réalisé par " + film_item.getCreated_by());
         }
-
         longue_description.setText(film_item.getLongueDesc());
 
         makeTextViewResizable(longue_description,5,"Continuer",true);
@@ -189,8 +224,6 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
 
 
         // Récupération de l'affiche
-        Picasso.with(convertView.getContext()).load("https://image.tmdb.org/t/p/" + "w780" +film_item.getUrlAffiche()).into(image);
-        miniature.setImageDrawable(image.getDrawable());
 
         //Picasso.with(convertView.getContext()).load(film_item.getUrlAffiche()).into(image);
         bouton.setOnClickListener(new View.OnClickListener() {
@@ -204,7 +237,12 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
             }
         });
 
-
+        // Type
+        if(film_item.getType().matches("show")) {
+            type.setText("Série de "+film_item.getSeason_number()+" saisons.\nUn épisode dure "+film_item.getEpisode_run_time_average()+"min");
+        }else {
+            type.setText("Film de "+film_item.getRuntime()/60+"h"+film_item.getRuntime()%60);
+        }
 
         return convertView;
     }
@@ -226,7 +264,6 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
                 ViewTreeObserver obs = tv.getViewTreeObserver();
                 obs.removeGlobalOnLayoutListener(this);
                 if (maxLine == 0) {
-                    Log.e("Message","1");
                     int lineEndIndex = tv.getLayout().getLineEnd(0);
                     String text = tv.getText().subSequence(0,
                             lineEndIndex - expandText.length() + 1)
@@ -238,7 +275,6 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
                                             .toString(), tv, maxLine, expandText,
                                     viewMore), TextView.BufferType.SPANNABLE);
                 } else if (maxLine > 0 && tv.getLineCount() >= maxLine) {
-                    Log.e("Message","2");
 
                     int lineEndIndex = tv.getLayout().getLineEnd(maxLine - 1);
                     String text = tv.getText().subSequence(0,
@@ -251,7 +287,6 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
                                             .toString(), tv, maxLine, expandText,
                                     viewMore), TextView.BufferType.SPANNABLE);
                 } else {
-                    Log.e("Message","3");
 
                     int lineEndIndex = tv.getLayout().getLineEnd(
                             tv.getLayout().getLineCount() - 1);
@@ -275,7 +310,6 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
         SpannableStringBuilder ssb = new SpannableStringBuilder(strSpanned);
 
         if (strSpanned.contains(spanableText)) {
-            Log.e("Message","4");
 
             ssb.setSpan(
                     new ClickableSpan() {
@@ -284,7 +318,6 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
                         public void onClick(View widget) {
 
                             if (viewMore) {
-                                Log.e("Message","5");
 
                                 tv.setLayoutParams(tv.getLayoutParams());
                                 tv.setText(tv.getTag().toString(),
@@ -295,7 +328,6 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
                                 tv.setTextColor(Color.BLACK);
                                 notifyDataSetInvalidated();
                             } else {
-                                Log.e("Message","6");
 
                                 tv.setLayoutParams(tv.getLayoutParams());
                                 tv.setText(tv.getTag().toString(),

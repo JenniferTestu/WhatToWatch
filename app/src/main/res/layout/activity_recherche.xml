@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.RechercheActivity"
+    android:background="@color/colorPrimaryDark">
+
+    <ScrollView
+        android:layout_width="350dp"
+        android:layout_height="550dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="40dp">
+
+            <TextView
+                android:paddingVertical="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Type"
+                android:textSize="20dp"
+                android:textStyle="bold"></TextView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <CheckBox
+                    android:id="@+id/check_films"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Films"></CheckBox>
+
+                <CheckBox
+                    android:id="@+id/check_series"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Séries"></CheckBox>
+
+            </LinearLayout>
+
+            <TextView
+                android:paddingVertical="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Genres"
+                android:textSize="20dp"
+                android:textStyle="bold"></TextView>
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="2"
+                android:gravity="center">
+
+                <CheckBox
+                    android:id="@+id/check_act"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Action &amp; Aventure"></CheckBox>
+
+                <CheckBox
+                    android:id="@+id/check_ani"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Animation"></CheckBox>
+
+                <CheckBox
+                    android:id="@+id/check_cmy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Comédie"></CheckBox>
+
+                <CheckBox
+                    android:id="@+id/check_crm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Crime Thriler"></CheckBox>
+
+                <CheckBox
+                    android:id="@+id/check_doc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Documentaire"></CheckBox>
+
+                <CheckBox
+                    android:id="@+id/check_drm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Drame"></CheckBox>
+
+                <CheckBox
+                    android:id="@+id/check_fnt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fantastique"></CheckBox>
+
+                <CheckBox
+                    android:id="@+id/check_hst"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Histoire"></CheckBox>
+
+                <CheckBox
+                    android:id="@+id/check_hrr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Horreur"></CheckBox>
+
+                <CheckBox
+                    android:id="@+id/check_fml"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pour enfants"></CheckBox>
+
+                <CheckBox
+                    android:id="@+id/check_msc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Musique &amp; Comédie"></CheckBox>
+
+                <CheckBox
+                    android:id="@+id/check_trl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mystère &amp; Thriller"></CheckBox>
+
+                <CheckBox
+                    android:id="@+id/check_rma"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Comédie Romantique"></CheckBox>
+
+                <CheckBox
+                    android:id="@+id/check_scf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Science-Fiction"></CheckBox>
+
+                <CheckBox
+                    android:id="@+id/check_spt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sport &amp; Fitness"></CheckBox>
+
+                <CheckBox
+                    android:id="@+id/check_war"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Film de guerre"></CheckBox>
+
+                <CheckBox
+                    android:id="@+id/check_wsn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Western"></CheckBox>
+
+                <CheckBox
+                    android:id="@+id/check_rly"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Reality TV"></CheckBox>
+
+                <CheckBox
+                    android:id="@+id/check_eur"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Made in Europe"></CheckBox>
+
+            </GridLayout>
+
+            <TextView
+                android:paddingVertical="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Année de sortie"
+                android:textSize="20dp"
+                android:textStyle="bold"></TextView>
+
+            <org.florescu.android.rangeseekbar.RangeSeekBar
+                android:id="@+id/seekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:valuesAboveThumbs="true"
+                app:textAboveThumbsColor="@color/colorPrimaryDark"
+                />
+
+            <TextView
+                android:paddingVertical="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Durée (en minutes)"
+                android:textSize="20dp"
+                android:textStyle="bold"></TextView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Minimum : "></TextView>
+
+                <EditText
+                    android:id="@+id/min_duree"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"></EditText>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Maximum : "></TextView>
+
+                <EditText
+                    android:id="@+id/max_duree"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"></EditText>
+
+            </LinearLayout>
+
+            <TextView
+                android:paddingVertical="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Avec"
+                android:textSize="20dp"
+                android:textStyle="bold"></TextView>
+
+            <AutoCompleteTextView
+                android:id="@+id/acteur"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:completionThreshold="4"/>
+
+            <TextView
+                android:paddingVertical="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Age"
+                android:textSize="20dp"
+                android:textStyle="bold"></TextView>
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="2"
+                android:gravity="center">
+
+                <CheckBox
+                    android:id="@+id/check_u"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tous public"></CheckBox>
+
+                <CheckBox
+                    android:id="@+id/check_10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-10"></CheckBox>
+
+                <CheckBox
+                    android:id="@+id/check_12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-12"></CheckBox>
+
+                <CheckBox
+                    android:id="@+id/check_16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-16"></CheckBox>
+
+                <CheckBox
+                    android:id="@+id/check_18"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-18"></CheckBox>
+
+            </GridLayout>
+
+            <TextView
+                android:paddingVertical="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Plateformes"
+                android:textSize="20dp"
+                android:textStyle="bold"></TextView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/plateformes"
+                android:layout_width="match_parent"
+                android:layout_height="330dp">
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <LinearLayout
+                android:paddingTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/annuler"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Annuler"
+                    android:textAllCaps="false"
+                    ></Button>
+
+                <Button
+                    android:id="@+id/surprise"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Surprends moi"
+                    android:textAllCaps="false"
+                    ></Button>
+
+                <Button
+                    android:id="@+id/rechercher"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rechercher"
+                    android:textAllCaps="false"
+                    ></Button>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:src="@drawable/compagnion"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+    </ImageView>
+
+    <pl.droidsonroids.gif.GifImageView
+        android:layout_marginTop="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="68dp"
+        android:src="@drawable/happy"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+    </pl.droidsonroids.gif.GifImageView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

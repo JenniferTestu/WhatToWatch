@@ -54,7 +54,7 @@ public class ChargementActivity extends AppCompatActivity {
 
         TextView tv = findViewById(R.id.textApp);
 
-        ObjectAnimator textColorAnim = ObjectAnimator.ofInt(tv, "textColor", Color.parseColor("#006F61"), Color.WHITE);
+        ObjectAnimator textColorAnim = ObjectAnimator.ofInt(tv, "textColor", Color.parseColor("#2A387F"), Color.WHITE);
         textColorAnim.setDuration(1000);
         textColorAnim.setEvaluator(new ArgbEvaluator());
         textColorAnim.start();

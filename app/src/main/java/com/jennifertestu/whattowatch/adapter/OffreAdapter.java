@@ -53,7 +53,7 @@ public class OffreAdapter extends RecyclerView.Adapter<OffreAdapter.OffreViewHol
             holder.prix.setText(String.valueOf(o.getRetailPrice()) + "\u20ac");
         }
         holder.format.setText(o.getPresentationType());
-        Picasso.with(context).load(Plateforme.getById(o.getProviderId()).getImage()).into(holder.icon);
+        Picasso.get().load(Plateforme.getById(o.getProviderId()).getImage()).into(holder.icon);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

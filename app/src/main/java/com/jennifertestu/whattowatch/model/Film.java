@@ -15,32 +15,65 @@ public class Film implements Serializable {
     // Id IMDB
     //@SerializedName("imdb_id")
     private String idImdb;
+    // Type film ou serie
+    private String type;
     // Titre du film
     @SerializedName("title")
     private String titre;
+    // Nom de la serie
+    @SerializedName("name")
+    private String nomSerie;
     // Affiche du film
     @SerializedName("poster_path")
     private String urlAffiche;
     // Image d'arrière plan
     @SerializedName("backdrop_path")
     private String urlArrierePlan;
-    // Date de sortie
+    // Date de sortie du film
     @SerializedName("release_date")
     @Expose
     private String date;
-    // Catégories du films
+    // Date de sortie de la série
+    @SerializedName("first_air_date")
+    @Expose
+    private String date_premier_ep;
+    // Ids des catégories du films
     @SerializedName("genre_ids")
     @Expose
-    private List<Integer> genres = null;
+    private List<Integer> genresIds = null;
+    // Categories du films
+    @SerializedName("genres")
+    @Expose
+    private List<Genre> genres = null;
     // Longue description
     @SerializedName("overview")
     private String longueDesc;
     // Liste des personnes ayant travaillé pour ce film
-    private Credits credits = null;
+    @SerializedName("credits")
+    @Expose
+    private Credits credits;
     // Liste des plateformes
     private List<Offre> listeOffres = new ArrayList<Offre>();
     // Liste des videos
-    private List<Video> listeVideos = new ArrayList<Video>();
+    @SerializedName("videos")
+    @Expose
+    private VideosResultats listeVideos;
+    // Nombre de saisons
+    @SerializedName("number_of_seasons")
+    @Expose
+    private int season_number;
+    // Durée du film
+    @SerializedName("runtime")
+    @Expose
+    private int runtime;
+    // Durée moyenne d'un episode
+    @SerializedName("episode_run_time")
+    @Expose
+    private ArrayList<Integer> episode_run_time;
+    @SerializedName("created_by")
+    @Expose
+    private ArrayList<Createur> created_by;
+
 
     public int getId() {
         return id;
@@ -106,10 +139,10 @@ public class Film implements Serializable {
         this.listeOffres = listeOffres;
     }
 
-    public List<String> getGenres() {
+    public List<String> getGenresIds() {
         List<String> result = new ArrayList<>();
 
-        for (Integer g:genres) {
+        for (Integer g: genresIds) {
 
             if(g==28) {
                 result.add("Action");
@@ -155,8 +188,8 @@ public class Film implements Serializable {
         return result;
     }
 
-    public void setGenres(List<Integer> genres) {
-        this.genres = genres;
+    public void setGenresIds(List<Integer> genresIds) {
+        this.genresIds = genresIds;
     }
 
     public String getDate() {
@@ -178,11 +211,83 @@ public class Film implements Serializable {
         return result;
     }
 
-    public List<Video> getListeVideos() {
+    public VideosResultats getListeVideos() {
         return listeVideos;
     }
 
-    public void setListeVideos(List<Video> listeVideos) {
+    public void setListeVideos(VideosResultats listeVideos) {
         this.listeVideos = listeVideos;
+    }
+
+    public List<Genre> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(List<Genre> genres) {
+        this.genres = genres;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public int getSeason_number() {
+        return season_number;
+    }
+
+    public void setSeason_number(int season_number) {
+        this.season_number = season_number;
+    }
+
+    public int getRuntime() {
+        return runtime;
+    }
+
+    public void setRuntime(int runtime) {
+        this.runtime = runtime;
+    }
+
+    public String getDate_premier_ep() {
+        return date_premier_ep;
+    }
+
+    public void setDate_premier_ep(String date_premier_ep) {
+        this.date_premier_ep = date_premier_ep;
+    }
+
+    public String getNomSerie() {
+        return nomSerie;
+    }
+
+    public void setNomSerie(String nomSerie) {
+        this.nomSerie = nomSerie;
+    }
+
+    public int getEpisode_run_time_average() {
+        int count = 0;
+        for (Integer i:episode_run_time) {
+            count += i;
+        }
+        return count/episode_run_time.size();
+    }
+
+    public void setEpisode_run_time(ArrayList<Integer> episode_run_time) {
+        this.episode_run_time = episode_run_time;
+    }
+
+    public String getCreated_by() {
+        String result = "";
+        for(int i=0;i<created_by.size();i++) {
+                result = result + created_by.get(i).getName();
+        }
+        return result;
+    }
+
+    public void setCreated_by(ArrayList<Createur> created_by) {
+        this.created_by = created_by;
     }
 }
