@@ -55,7 +55,7 @@
 
                             <ImageView
                                 android:id="@+id/affiche_miniature"
-                                android:layout_width="150dp"
+                                android:layout_width="130dp"
                                 android:layout_height="200dp"
                                 android:scaleType="centerCrop"
                                 android:adjustViewBounds="true" />
@@ -192,6 +192,15 @@
                         </androidx.core.widget.NestedScrollView>
 
                         <TextView
+                            android:id="@+id/credits"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingHorizontal="15sp"
+                            android:paddingTop="30sp"
+                            android:textColor="@android:color/black"
+                            android:justificationMode="inter_word"/>
+
+                        <TextView
                             android:id="@+id/longue_description"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -209,7 +218,6 @@
             </RelativeLayout>
 
             <LinearLayout
-                android:id="@+id/divers"
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
                 android:layout_margin="10sp"
@@ -231,6 +239,13 @@
                     android:id="@+id/type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"></TextView>
+
+                <LinearLayout
+                    android:id="@+id/divers"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:gravity="center|right"
+                    android:orientation="horizontal"></LinearLayout>
 
             </LinearLayout>
 

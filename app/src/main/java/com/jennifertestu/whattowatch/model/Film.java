@@ -15,7 +15,9 @@ public class Film implements Serializable {
     // Id IMDB
     //@SerializedName("imdb_id")
     private String idImdb;
-    // Type film ou serie
+    // Id JW
+    private int idJw;
+    // Type JW film ou serie
     private String type;
     // Titre du film
     @SerializedName("title")
@@ -73,7 +75,7 @@ public class Film implements Serializable {
     @SerializedName("created_by")
     @Expose
     private ArrayList<Createur> created_by;
-
+    private String age;
 
     public int getId() {
         return id;
@@ -289,5 +291,21 @@ public class Film implements Serializable {
 
     public void setCreated_by(ArrayList<Createur> created_by) {
         this.created_by = created_by;
+    }
+
+    public int getIdJw() {
+        return idJw;
+    }
+
+    public void setIdJw(int idJw) {
+        this.idJw = idJw;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
     }
 }

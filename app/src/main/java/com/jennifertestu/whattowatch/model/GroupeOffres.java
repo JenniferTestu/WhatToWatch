@@ -50,7 +50,9 @@ public class GroupeOffres implements Serializable
     @SerializedName("cinema_release_date")
     @Expose
     private String cinemaReleaseDate;
-
+    @SerializedName("age_certification")
+    @Expose
+    private String ageCertification;
 
     public String getJwEntityId() {
         return jwEntityId;
@@ -221,5 +223,12 @@ public class GroupeOffres implements Serializable
         return this;
     }
 
+    public String getAgeCertification() {
+        return ageCertification;
+    }
+
+    public void setAgeCertification(String ageCertification) {
+        this.ageCertification = ageCertification;
+    }
 }
 
