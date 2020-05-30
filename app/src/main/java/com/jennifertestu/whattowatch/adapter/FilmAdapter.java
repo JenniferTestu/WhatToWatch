@@ -12,6 +12,7 @@ import android.text.SpannableStringBuilder;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,6 +79,7 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
         TextView categories = (TextView) convertView.findViewById(R.id.info_categories);
         TextView real = (TextView) convertView.findViewById(R.id.info_real);
         longue_description = (TextView) convertView.findViewById(R.id.longue_description);
+        TextView credits = convertView.findViewById(R.id.credits);
 
         // Remplissage des info
         //Picasso.with(convertView.getContext()).load("https://image.tmdb.org/t/p/" + "w500" +film_item.getUrlAffiche()).into(miniature);
@@ -106,22 +108,33 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
 
                 });
 
-        // Liste les videos
+        // Liste les 4 premieres videos qui sont classées de Trailer, Extrait, Clip
+        Collections.sort(film_item.getListeVideos().getResults(), new Comparator<Video>()
+        {
+            @Override
+            public int compare(Video v1, Video v2) {
+                return (v2.getType()).compareTo(v1.getType());
+            }
+        });
+        int i = 0;
         for (final Video video: film_item.getListeVideos().getResults()) {
-            TextView tv = new TextView(context);
-            tv.setText(video.getType());
-            tv.setPadding(30,0,0,0);
-            tv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent i = new Intent(Intent.ACTION_VIEW);
-                    i.setData(Uri.parse("https://www.youtube.com/watch?v="+video.getKey()));
-                    i.addFlags(FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(i);
-                }
-            });
-            //tv.setCompoundDrawablesWithIntrinsicBounds(context.getResources().getDrawable(R.id.ic),null,null,null);
-            divers.addView(tv);
+            if (i<4) {
+                TextView tv = new TextView(context);
+                tv.setText(video.getType());
+                tv.setPadding(30, 0, 0, 0);
+                tv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.setData(Uri.parse("https://www.youtube.com/watch?v=" + video.getKey()));
+                        i.addFlags(FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(i);
+                    }
+                });
+                //tv.setCompoundDrawablesWithIntrinsicBounds(context.getResources().getDrawable(R.id.ic),null,null,null);
+                divers.addView(tv);
+                i++;
+            }
         }
 
         // Format de la date
@@ -159,6 +172,12 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
         }else {
             real.setText("Réalisé par " + film_item.getCreated_by());
         }
+
+        credits.setText("Avec : "+film_item.getCredits().getCast().get(0).getName());
+        for(int compt=1;compt<5;compt++){
+            credits.append(", "+film_item.getCredits().getCast().get(compt).getName());
+        }
+
         longue_description.setText(film_item.getLongueDesc());
 
         makeTextViewResizable(longue_description,5,"Continuer",true);
@@ -184,7 +203,6 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
         {
             @Override
             public int compare(Offre o1, Offre o2) {
-
                 return Double.valueOf(o1.getRetailPrice()).compareTo(o2.getRetailPrice());
             }
         });
@@ -193,7 +211,6 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
         {
             @Override
             public int compare(Offre o1, Offre o2) {
-
                 return Integer.valueOf(Plateforme.getById(o1.getProviderId()).getPlace()).compareTo(Plateforme.getById(o2.getProviderId()).getPlace());
             }
         });
@@ -242,6 +259,11 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
             type.setText("Série de "+film_item.getSeason_number()+" saisons.\nUn épisode dure "+film_item.getEpisode_run_time_average()+"min");
         }else {
             type.setText("Film de "+film_item.getRuntime()/60+"h"+film_item.getRuntime()%60);
+            if (film_item.getAge()!=null && film_item.getAge().matches("U")) {
+                type.append("\n" + "Tous public");
+            }else if(film_item.getAge()!=null){
+                type.append("\n-" + film_item.getAge());
+            }
         }
 
         return convertView;

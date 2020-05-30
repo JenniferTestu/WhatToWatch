@@ -142,8 +142,7 @@ public class RechercheActivity extends AppCompatActivity {
         final RecyclerView plateformes = findViewById(R.id.plateformes);
 
         // Plateformes
-        //PlateformeAdapter mAdapter = new PlateformeAdapter(Plateforme.values(),recherche.getProviders());
-        PlateformeAdapter mAdapter = new PlateformeAdapter(Plateforme.values(),new ArrayList<String>());
+        PlateformeAdapter mAdapter = new PlateformeAdapter(Plateforme.values(),recherche.getProviders());
         GridLayoutManager manager = new GridLayoutManager(this,5);
         //manager.setOrientation(RecyclerView.HORIZONTAL);
         plateformes.setHasFixedSize(true);
@@ -205,14 +204,12 @@ public class RechercheActivity extends AppCompatActivity {
             if(recherche.getAge_certifications().contains("18"))moins_18.setChecked(true);
 
             // Plateformes
-            /*
             for (int i = 0; i < plateformes.getChildCount(); i++) {
                 View view = plateformes.getChildAt(i);
                 if (recherche.getProviders().contains(view.getTag().toString())) {
                     view.setAlpha(1f);
                 }
             }
-            */
         }
 
         // Bouton annuler
