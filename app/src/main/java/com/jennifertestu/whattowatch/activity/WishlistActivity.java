@@ -21,6 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.jennifertestu.whattowatch.BuildConfig;
 import com.jennifertestu.whattowatch.R;
 import com.jennifertestu.whattowatch.adapter.FilmAdapter;
@@ -31,6 +32,7 @@ import com.jennifertestu.whattowatch.model.GroupeOffres;
 import com.jennifertestu.whattowatch.utils.RecyclerItemTouchHelper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -93,6 +95,7 @@ public class WishlistActivity extends AppCompatActivity implements RecyclerItemT
                                                                          GroupeOffres resultats = response.body();
                                                                          film.setListeOffres(resultats.getOffres());
                                                                          film.setAge(resultats.getAgeCertification());
+                                                                         film.setIdJw(resultats.getId());
                                                                          listeFilms.add(film);
                                                                          recyclerAdapter.notifyDataSetChanged();
                                                                      }
@@ -133,21 +136,18 @@ public class WishlistActivity extends AppCompatActivity implements RecyclerItemT
     }
 
     @Override
-    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+    public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction, int position) {
         if (viewHolder instanceof ToWatchAdapter.FilmViewHolder) {
             // get the removed item name to display it in snack bar
             final String name = listeFilms.get(viewHolder.getAdapterPosition()).getTitre();
+            final Film deletedItem = listeFilms.get(viewHolder.getAdapterPosition());
 
             if(direction==ItemTouchHelper.LEFT) {
-                // backup of removed item for undo purpose
-                final Film deletedItem = listeFilms.get(viewHolder.getAdapterPosition());
-                final int deletedIndex = viewHolder.getAdapterPosition();
 
-                // remove the item from recycler view
                 FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
-                FirebaseFirestore fStore = FirebaseFirestore.getInstance();
+                final FirebaseFirestore fStore = FirebaseFirestore.getInstance();
 
-                String utilisateurId = mFirebaseAuth.getCurrentUser().getUid();
+                final String utilisateurId = mFirebaseAuth.getCurrentUser().getUid();
                 final CollectionReference collectionReference = fStore.collection("Utilisateurs").document(utilisateurId).collection("ToWatch");
 
                 Query query = collectionReference.whereEqualTo("id_tmdb", deletedItem.getId());
@@ -158,24 +158,104 @@ public class WishlistActivity extends AppCompatActivity implements RecyclerItemT
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 collectionReference.document(document.getId()).delete();
-                                Toast.makeText(WishlistActivity.this, name+" supprimé", Toast.LENGTH_SHORT).show();
+
+                                final CollectionReference collectionHistorique = fStore.collection("Utilisateurs").document(utilisateurId).collection("Historique");
+
+                                Map<String,Object> historique = new HashMap<>();
+                                historique.put("id_tmdb",deletedItem.getId());
+                                historique.put("id_jw",deletedItem.getIdJw());
+                                historique.put("type_jw",deletedItem.getType());
+                                historique.put("aime",false);
+
+                                collectionHistorique.add(historique).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                    @Override
+                                    public void onSuccess(DocumentReference documentReference) {
+                                        Toast.makeText(WishlistActivity.this, "Vous n'avez pas aimé " + name, Toast.LENGTH_LONG).show();
+                                        recyclerAdapter.removeItem(viewHolder.getAdapterPosition());
+                                    }
+                                });
+
                             }
                         } else {
                             Log.d("Probleme", "Error getting documents: ", task.getException());
-                            Toast.makeText(WishlistActivity.this, "Echec de la suppression de "+name, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(WishlistActivity.this, "Echec de la suppression de "+name, Toast.LENGTH_LONG).show();
                         }
                     }
                 });
-                recyclerAdapter.removeItem(viewHolder.getAdapterPosition());
 
             }else if(direction==ItemTouchHelper.RIGHT){
 
-                recyclerAdapter.removeItem(viewHolder.getAdapterPosition());
+                FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+                final FirebaseFirestore fStore = FirebaseFirestore.getInstance();
 
-                Log.e("MESSAGE",name+" a été vu !");
+                final String utilisateurId = mFirebaseAuth.getCurrentUser().getUid();
+                final CollectionReference collectionReference = fStore.collection("Utilisateurs").document(utilisateurId).collection("ToWatch");
+
+                Query query = collectionReference.whereEqualTo("id_tmdb", deletedItem.getId());
+
+                query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                collectionReference.document(document.getId()).delete();
+
+                                final CollectionReference collectionHistorique = fStore.collection("Utilisateurs").document(utilisateurId).collection("Historique");
+
+                                Map<String,Object> historique = new HashMap<>();
+                                historique.put("id_tmdb",deletedItem.getId());
+                                historique.put("id_jw",deletedItem.getIdJw());
+                                historique.put("type_jw",deletedItem.getType());
+                                historique.put("aime",true);
+
+                                collectionHistorique.add(historique).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                    @Override
+                                    public void onSuccess(DocumentReference documentReference) {
+                                        Toast.makeText(WishlistActivity.this, "Vous avez aimé " + name, Toast.LENGTH_LONG).show();
+                                        recyclerAdapter.removeItem(viewHolder.getAdapterPosition());
+                                    }
+                                });
+
+                            }
+                        } else {
+                            Log.d("Probleme", "Error getting documents: ", task.getException());
+                            Toast.makeText(WishlistActivity.this, "Echec de la suppression de "+name, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
 
             }
         }
     }
+/*
+    public void suppressionMulti (){
+        // backup of removed item for undo purpose
+        final int deletedIndex = viewHolder.getAdapterPosition();
 
+        // Enlever de la ToWatchList
+        FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+        FirebaseFirestore fStore = FirebaseFirestore.getInstance();
+
+        String utilisateurId = mFirebaseAuth.getCurrentUser().getUid();
+        final CollectionReference collectionReference = fStore.collection("Utilisateurs").document(utilisateurId).collection("ToWatch");
+
+        Query query = collectionReference.whereEqualTo("id_tmdb", deletedItem.getId());
+
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        collectionReference.document(document.getId()).delete();
+                        Toast.makeText(WishlistActivity.this, name+" supprimé", Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Log.d("Probleme", "Error getting documents: ", task.getException());
+                    Toast.makeText(WishlistActivity.this, "Echec de la suppression de "+name, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        recyclerAdapter.removeItem(viewHolder.getAdapterPosition());
+    }
+    */
 }

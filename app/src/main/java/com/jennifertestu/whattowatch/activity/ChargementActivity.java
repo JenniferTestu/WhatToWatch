@@ -10,11 +10,15 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Gravity;
+import android.view.View;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.jennifertestu.whattowatch.R;
+
+import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip;
 
 public class ChargementActivity extends AppCompatActivity {
 
@@ -59,6 +63,19 @@ public class ChargementActivity extends AppCompatActivity {
         textColorAnim.setEvaluator(new ArgbEvaluator());
         textColorAnim.start();
 
+        /*
+        View yourView = findViewById(R.id.mascotte);
+
+        new SimpleTooltip.Builder(this)
+                .anchorView(yourView)
+                .text("Coucou, content de te revoir !")
+                .maxWidth(400f)
+                .textColor(Color.WHITE)
+                .gravity(Gravity.END)
+                .build()
+                .show();
+
+         */
     }
 
     @Override

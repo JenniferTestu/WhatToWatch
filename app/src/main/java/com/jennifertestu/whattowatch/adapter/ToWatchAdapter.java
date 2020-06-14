@@ -33,9 +33,7 @@ import com.jennifertestu.whattowatch.model.Plateforme;
 import com.jennifertestu.whattowatch.model.Video;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -95,9 +93,6 @@ public class ToWatchAdapter extends RecyclerView.Adapter<ToWatchAdapter.FilmView
                 }
             }
         });
-
-
-        // Element de la carte
 
 
         // Remplissage des info
@@ -300,8 +295,8 @@ public class ToWatchAdapter extends RecyclerView.Adapter<ToWatchAdapter.FilmView
     }
 
     public class FilmViewHolder extends RecyclerView.ViewHolder {
-        public TextView titre, textVu, textSupp,type,name,date,categories,real,longue_description,credits;
-        public ImageView thumbnail,vuIcon,suppIcon, miniature;
+        public TextView titre, textAime, textPasAime,type,name,date,categories,real,longue_description,credits;
+        public ImageView thumbnail, miniature;
         public RelativeLayout viewBackground, viewForeground;
         public LinearLayout divers;
         public ScrollView plus_info;
@@ -313,10 +308,8 @@ public class ToWatchAdapter extends RecyclerView.Adapter<ToWatchAdapter.FilmView
             super(view);
             titre = view.findViewById(R.id.titre);
             thumbnail = view.findViewById(R.id.thumbnail);
-            textVu = view.findViewById(R.id.text_vu);
-            textSupp = view.findViewById(R.id.text_supp);
-            vuIcon = view.findViewById(R.id.vu_icon);
-            suppIcon = view.findViewById(R.id.delete_icon);
+            textAime = view.findViewById(R.id.text_vu);
+            textPasAime = view.findViewById(R.id.text_supp);
             viewBackground = view.findViewById(R.id.view_background);
             viewForeground = view.findViewById(R.id.view_foreground);
             divers = view.findViewById(R.id.divers);

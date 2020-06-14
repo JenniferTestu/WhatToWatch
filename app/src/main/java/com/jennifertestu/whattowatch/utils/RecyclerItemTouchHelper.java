@@ -51,25 +51,22 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
                             RecyclerView.ViewHolder viewHolder, float dX, float dY,
                             int actionState, boolean isCurrentlyActive) {
         final View foregroundView = ((ToWatchAdapter.FilmViewHolder) viewHolder).viewForeground;
-
+        if(actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
             if (dX > 0) {
-                ((ToWatchAdapter.FilmViewHolder) viewHolder).vuIcon.setVisibility(View.VISIBLE);
-                ((ToWatchAdapter.FilmViewHolder) viewHolder).textVu.setVisibility(View.VISIBLE);
-
-                ((ToWatchAdapter.FilmViewHolder) viewHolder).suppIcon.setVisibility(View.GONE);
-                ((ToWatchAdapter.FilmViewHolder) viewHolder).textSupp.setVisibility(View.GONE);
+                ((ToWatchAdapter.FilmViewHolder) viewHolder).textAime.setVisibility(View.VISIBLE);
+                ((ToWatchAdapter.FilmViewHolder) viewHolder).viewBackground.setBackgroundColor(Color.parseColor("#5CB85C"));
+                ((ToWatchAdapter.FilmViewHolder) viewHolder).textPasAime.setVisibility(View.GONE);
 
             } else {
-                ((ToWatchAdapter.FilmViewHolder) viewHolder).vuIcon.setVisibility(View.GONE);
-                ((ToWatchAdapter.FilmViewHolder) viewHolder).textVu.setVisibility(View.GONE);
-
-                ((ToWatchAdapter.FilmViewHolder) viewHolder).suppIcon.setVisibility(View.VISIBLE);
-                ((ToWatchAdapter.FilmViewHolder) viewHolder).textSupp.setVisibility(View.VISIBLE);
+                ((ToWatchAdapter.FilmViewHolder) viewHolder).textAime.setVisibility(View.GONE);
+                ((ToWatchAdapter.FilmViewHolder) viewHolder).viewBackground.setBackgroundColor(Color.parseColor("#D9534F"));
+                ((ToWatchAdapter.FilmViewHolder) viewHolder).textPasAime.setVisibility(View.VISIBLE);
 
             }
 
-        getDefaultUIUtil().onDraw(c, recyclerView, foregroundView, dX, dY,
-                actionState, isCurrentlyActive);
+            getDefaultUIUtil().onDraw(c, recyclerView, foregroundView, dX, dY,
+                    actionState, isCurrentlyActive);
+        }
     }
 
     @Override

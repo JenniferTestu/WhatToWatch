@@ -10,39 +10,21 @@
         android:id="@+id/view_background"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:background="#000000">
-
-        <ImageView
-            android:id="@+id/delete_icon"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:src="@android:drawable/ic_delete"
-            android:visibility="gone"/>
+        android:background="#000000"
+        android:clickable="false">
 
         <TextView
             android:id="@+id/text_supp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
-            android:layout_toLeftOf="@id/delete_icon"
-            android:text="Supprimer"
+            android:text="Pas aimé"
             android:textColor="#fff"
             android:textSize="16dp"
-            android:visibility="gone"/>
-
-        <ImageView
-            android:id="@+id/vu_icon"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/tick"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/text_vu"
@@ -50,11 +32,11 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/vu_icon"
-            android:text="Vu"
+            android:text="Aimé"
             android:textColor="#fff"
             android:textSize="16dp"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:textStyle="bold"/>
 
     </RelativeLayout>
 
@@ -78,7 +60,7 @@
             android:layout_height="match_parent"
             android:ellipsize="end"
             android:fontFamily="sans-serif-medium"
-            android:maxLines="1"
+            android:maxLines="3"
             android:textColor="#FFFFFF"
             android:textSize="30dp"
             android:text="Titre"
