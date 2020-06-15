@@ -206,10 +206,10 @@ public class Film implements Serializable {
 
     public String getRealisateurs(){
 
-        String result = "";
-        for(int i=0;i<credits.getCrew().size();i++) {
+        String result = credits.getCrew().get(0).getName();
+        for(int i=1;i<credits.getCrew().size();i++) {
             if(credits.getCrew().get(i).getJob().equals("Director")){
-                result = result + credits.getCrew().get(i).getName();
+                result = result + ", " + credits.getCrew().get(i).getName();
             }
         }
         return result;
@@ -284,9 +284,9 @@ public class Film implements Serializable {
     }
 
     public String getCreated_by() {
-        String result = "";
-        for(int i=0;i<created_by.size();i++) {
-                result = result + created_by.get(i).getName();
+        String result = created_by.get(0).getName();
+        for(int i=1;i<created_by.size();i++) {
+                result = result + ", " + created_by.get(i).getName();
         }
         return result;
     }
