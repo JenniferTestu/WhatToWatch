@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Film implements Serializable {
 
-    // Id
+    // Id TMDB
     @SerializedName("id")
     private int id;
     // Id IMDB
@@ -17,6 +17,8 @@ public class Film implements Serializable {
     private String idImdb;
     // Id JW
     private int idJw;
+    // Id dans la BDD Firebase
+    private String idFirebase;
     // Type JW film ou serie
     private String type;
     // Titre du film
@@ -308,4 +310,26 @@ public class Film implements Serializable {
     public void setAge(String age) {
         this.age = age;
     }
+
+    public String getIdFirebase() {
+        return idFirebase;
+    }
+
+    public void setIdFirebase(String idFirebase) {
+        this.idFirebase = idFirebase;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Film)) {
+            return false;
+        }
+        Film other = (Film) o;
+        return id == other.id;
+    }
+/*
+    public int hashCode() {
+        return id == null ? 0 : id.hashCode();
+    }
+*/
 }

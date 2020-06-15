@@ -12,6 +12,9 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -21,11 +24,25 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ActionMode;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.jennifertestu.whattowatch.R;
+import com.jennifertestu.whattowatch.activity.WishlistActivity;
 import com.jennifertestu.whattowatch.model.Film;
 import com.jennifertestu.whattowatch.model.Genre;
 import com.jennifertestu.whattowatch.model.Offre;
@@ -42,14 +59,19 @@ import java.util.Locale;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
-public class ToWatchAdapter extends RecyclerView.Adapter<ToWatchAdapter.FilmViewHolder> {
+public class ToWatchAdapter extends RecyclerView.Adapter<ToWatchAdapter.FilmViewHolder> implements ActionMode.Callback {
 
     private Context context;
     private ArrayList<Film> listeFilms;
+    private AppCompatActivity activity;
 
-    public ToWatchAdapter(Context context, ArrayList<Film> listeFilms) {
+    private boolean multiSelect = false;
+    private ArrayList<Film> selectedItems = new ArrayList<Film>();
+
+    public ToWatchAdapter(AppCompatActivity activity, Context context, ArrayList<Film> listeFilms) {
         this.context = context;
         this.listeFilms = listeFilms;
+        this.activity = activity;
     }
 
     @NonNull
@@ -76,24 +98,55 @@ public class ToWatchAdapter extends RecyclerView.Adapter<ToWatchAdapter.FilmView
             @Override
             public void onClick(View v) {
 
-                if(holder.plus_info.getVisibility()==View.GONE) {
-                    //holder.plus_info.setVisibility(View.VISIBLE);
-                    TranslateAnimation animate = new TranslateAnimation(0,0,-holder.plus_info.getHeight(),0);
-                    animate.setDuration(500);
-                    animate.setFillAfter(true);
-                    holder.plus_info.startAnimation(animate);
-                    holder.plus_info.setVisibility(View.VISIBLE);
-                }else if(holder.plus_info.getVisibility()==View.VISIBLE) {
-                    //holder.plus_info.setVisibility(View.GONE);
-                    TranslateAnimation animate = new TranslateAnimation(0,0,0,holder.plus_info.getHeight());
-                    animate.setDuration(500);
-                    animate.setFillAfter(true);
-                    holder.plus_info.startAnimation(animate);
-                    holder.plus_info.setVisibility(View.GONE);
+                if (!multiSelect) {
+                    if (holder.plus_info.getVisibility() == View.GONE) {
+                        //holder.plus_info.setVisibility(View.VISIBLE);
+                        TranslateAnimation animate = new TranslateAnimation(0, 0, -holder.plus_info.getHeight(), 0);
+                        animate.setDuration(500);
+                        animate.setFillAfter(true);
+                        holder.plus_info.startAnimation(animate);
+                        holder.plus_info.setVisibility(View.VISIBLE);
+                    } else if (holder.plus_info.getVisibility() == View.VISIBLE) {
+                        //holder.plus_info.setVisibility(View.GONE);
+                        TranslateAnimation animate = new TranslateAnimation(0, 0, 0, holder.plus_info.getHeight());
+                        animate.setDuration(500);
+                        animate.setFillAfter(true);
+                        holder.plus_info.startAnimation(animate);
+                        holder.plus_info.setVisibility(View.GONE);
+                    }
+                }else if(multiSelect){
+                    selectItem(holder, film);
                 }
             }
         });
 
+        if (selectedItems.contains(film)) {
+            // if the item is selected, let the user know by adding a dark layer above it
+            holder.thumbnail.setAlpha(0.3f);
+        } else {
+            // else, keep it as it is
+            holder.thumbnail.setAlpha(1.0f);
+        }
+
+        holder.thumbnail.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                // if multiSelect is false, set it to true and select the item
+                if (!multiSelect) {
+                    // We have started multi selection, so set the flag to true
+                    multiSelect = true;
+                    // Add it to the list containing all the selected images
+                    activity.startSupportActionMode(ToWatchAdapter.this);
+                    selectItem(holder, film);
+
+                    return true;
+
+                }else {
+                    return false;
+                }
+
+            }
+        });
 
         // Remplissage des info
         //Picasso.with(convertView.getContext()).load("https://image.tmdb.org/t/p/" + "w500" +film_item.getUrlAffiche()).into(miniature);
@@ -294,6 +347,82 @@ public class ToWatchAdapter extends RecyclerView.Adapter<ToWatchAdapter.FilmView
         notifyItemInserted(position);
     }
 
+    private void selectItem(FilmViewHolder holder, Film f) {
+        // If the "selectedItems" list contains the item, remove it and set it's state to normal
+        if (selectedItems.contains(f)) {
+            selectedItems.remove(f);
+            holder.thumbnail.setAlpha(1.0f);
+        } else {
+            // Else, add it to the list and add a darker shade over the image, letting the user know that it was selected
+            selectedItems.add(f);
+            holder.thumbnail.setAlpha(0.3f);
+        }
+    }
+
+    // Méthodes de l'interface ActionMode
+
+    @Override
+    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+        // Inflate the menu resource providing context menu items
+        MenuInflater inflater = mode.getMenuInflater();
+        inflater.inflate(R.menu.menu_multi, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+        return true;
+    }
+
+    @Override
+    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+        if (item.getItemId() == R.id.action_delete) {
+            // Delete button is clicked, handle the deletion and finish the multi select process
+
+            // Enlever de la ToWatchList
+            FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+            FirebaseFirestore fStore = FirebaseFirestore.getInstance();
+
+            String utilisateurId = mFirebaseAuth.getCurrentUser().getUid();
+            final CollectionReference collectionReference = fStore.collection("Utilisateurs").document(utilisateurId).collection("ToWatch");
+
+            for (final Film f :selectedItems) {
+
+                collectionReference.document(f.getIdFirebase()).delete()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+
+                                    listeFilms.remove(f);
+                                    notifyDataSetChanged();
+                                    Toast.makeText(context, "Eléments supprimés", Toast.LENGTH_LONG).show();
+
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("Probleme", "Error getting documents: ", e);
+                                Toast.makeText(context, "Echec de la suppression", Toast.LENGTH_LONG).show();
+                            }
+
+                        });
+
+            }
+            selectedItems.clear();
+            mode.finish();
+        }
+        return true;
+    }
+
+    @Override
+    public void onDestroyActionMode(ActionMode mode) {
+        // finished multi selection
+        multiSelect = false;
+        selectedItems.clear();
+        notifyDataSetChanged();
+    }
+
     public class FilmViewHolder extends RecyclerView.ViewHolder {
         public TextView titre, textAime, textPasAime,type,name,date,categories,real,longue_description,credits;
         public ImageView thumbnail, miniature;
@@ -435,5 +564,11 @@ public class ToWatchAdapter extends RecyclerView.Adapter<ToWatchAdapter.FilmView
         }
         return ssb;
 
+    }
+
+    public void clear(){
+        multiSelect = false;
+        selectedItems.clear();
+        notifyDataSetChanged();
     }
 }

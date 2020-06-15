@@ -96,6 +96,7 @@ public class WishlistActivity extends AppCompatActivity implements RecyclerItemT
                                                                          film.setListeOffres(resultats.getOffres());
                                                                          film.setAge(resultats.getAgeCertification());
                                                                          film.setIdJw(resultats.getId());
+                                                                         film.setIdFirebase(document.getId());
                                                                          listeFilms.add(film);
                                                                          recyclerAdapter.notifyDataSetChanged();
                                                                      }
@@ -126,7 +127,7 @@ public class WishlistActivity extends AppCompatActivity implements RecyclerItemT
                 });
 
 
-        recyclerAdapter = new ToWatchAdapter(getApplicationContext(), listeFilms);
+        recyclerAdapter = new ToWatchAdapter(this,getApplicationContext(), listeFilms);
         recyclerView.setAdapter(recyclerAdapter);
 
 
@@ -228,34 +229,9 @@ public class WishlistActivity extends AppCompatActivity implements RecyclerItemT
         }
     }
 /*
-    public void suppressionMulti (){
-        // backup of removed item for undo purpose
-        final int deletedIndex = viewHolder.getAdapterPosition();
-
-        // Enlever de la ToWatchList
-        FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
-        FirebaseFirestore fStore = FirebaseFirestore.getInstance();
-
-        String utilisateurId = mFirebaseAuth.getCurrentUser().getUid();
-        final CollectionReference collectionReference = fStore.collection("Utilisateurs").document(utilisateurId).collection("ToWatch");
-
-        Query query = collectionReference.whereEqualTo("id_tmdb", deletedItem.getId());
-
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        collectionReference.document(document.getId()).delete();
-                        Toast.makeText(WishlistActivity.this, name+" supprimé", Toast.LENGTH_LONG).show();
-                    }
-                } else {
-                    Log.d("Probleme", "Error getting documents: ", task.getException());
-                    Toast.makeText(WishlistActivity.this, "Echec de la suppression de "+name, Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-        recyclerAdapter.removeItem(viewHolder.getAdapterPosition());
+    @Override
+    public void onBackPressed(){
+        recyclerAdapter.clear();
     }
-    */
+*/
 }
