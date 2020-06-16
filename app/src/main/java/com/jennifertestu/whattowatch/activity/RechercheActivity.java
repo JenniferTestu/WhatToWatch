@@ -19,6 +19,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.GridLayout;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.jennifertestu.whattowatch.R;
@@ -29,6 +31,7 @@ import com.jennifertestu.whattowatch.model.Personne;
 import com.jennifertestu.whattowatch.model.PersonnesResultats;
 import com.jennifertestu.whattowatch.model.Plateforme;
 import com.jennifertestu.whattowatch.model.Recherche;
+import com.jennifertestu.whattowatch.utils.ActionsMenu;
 
 import org.florescu.android.rangeseekbar.RangeSeekBar;
 
@@ -53,6 +56,8 @@ public class RechercheActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recherche);
+
+        ActionsMenu.menuPrincipal(this);
 
         // Recherche
         final SharedPreferences mPrefs = getSharedPreferences("Recherche", 0);
@@ -91,11 +96,26 @@ public class RechercheActivity extends AppCompatActivity {
         final EditText min_duree = findViewById(R.id.min_duree);
         final EditText max_duree = findViewById(R.id.max_duree);
 
+        final TextView tvAge = findViewById(R.id.tv_age_selection);
+        final GridLayout grille_ages = findViewById(R.id.age_selection);
         final CheckBox u = findViewById(R.id.check_u);
         final CheckBox moins_10 = findViewById(R.id.check_10);
         final CheckBox moins_12 = findViewById(R.id.check_12);
         final CheckBox moins_16 = findViewById(R.id.check_16);
         final CheckBox moins_18 = findViewById(R.id.check_18);
+
+        films.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(films.isChecked()){
+                    tvAge.setVisibility(View.VISIBLE);
+                    grille_ages.setVisibility(View.VISIBLE);
+                }else{
+                    tvAge.setVisibility(View.GONE);
+                    grille_ages.setVisibility(View.GONE);
+                }
+            }
+        });
 
         final AutoCompleteTextView tv_acteur = findViewById (R.id.acteur);
         int layout = android.R.layout.simple_dropdown_item_1line;
@@ -198,11 +218,18 @@ public class RechercheActivity extends AppCompatActivity {
             }
 
             // Age
-            if(recherche.getAge_certifications().contains("U"))u.setChecked(true);
-            if(recherche.getAge_certifications().contains("10"))moins_10.setChecked(true);
-            if(recherche.getAge_certifications().contains("12"))moins_12.setChecked(true);
-            if(recherche.getAge_certifications().contains("16"))moins_16.setChecked(true);
-            if(recherche.getAge_certifications().contains("18"))moins_18.setChecked(true);
+            if(!recherche.getContent_types().contains("movie")){
+                tvAge.setVisibility(View.GONE);
+                grille_ages.setVisibility(View.GONE);
+            }else {
+                tvAge.setVisibility(View.VISIBLE);
+                grille_ages.setVisibility(View.VISIBLE);
+                if (recherche.getAge_certifications().contains("U")) u.setChecked(true);
+                if (recherche.getAge_certifications().contains("10")) moins_10.setChecked(true);
+                if (recherche.getAge_certifications().contains("12")) moins_12.setChecked(true);
+                if (recherche.getAge_certifications().contains("16")) moins_16.setChecked(true);
+                if (recherche.getAge_certifications().contains("18")) moins_18.setChecked(true);
+            }
 
             // Plateformes
             for (int i = 0; i < plateformes.getChildCount(); i++) {
