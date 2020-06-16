@@ -25,6 +25,8 @@ public class ResetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset);
 
+        getSupportActionBar().hide();
+
         Button annuler = findViewById(R.id.annuler);
         Button reset = findViewById(R.id.reset);
         mail = findViewById(R.id.identifiant);
