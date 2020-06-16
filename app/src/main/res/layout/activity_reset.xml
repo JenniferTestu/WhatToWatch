@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.LoginActivity"
+    tools:context=".activity.ResetActivity"
     android:background="@color/colorPrimaryDark">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -59,55 +59,43 @@
             android:maxLines="1"
             android:inputType="textEmailAddress"></EditText>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Mot de passe"
-            android:textColor="#fff"></TextView>
-
-        <EditText
-            android:id="@+id/mdp"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:textColor="#D6D6D6"
-            android:maxLines="1"></EditText>
-
         <LinearLayout
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:gravity="center">
 
+
             <Button
-                android:id="@+id/connexion"
+                android:id="@+id/annuler"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Se connecter"
+                android:text="Annuler"
                 android:textAllCaps="false"
                 android:layout_marginVertical="30dp"
                 ></Button>
 
-            <TextView
-                android:id="@+id/inscription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Pas encore de compte ? Inscris toi"
-                android:textAllCaps="false"
-                android:textColor="#D6D6D6"
-                ></TextView>
-
-            <TextView
-                android:layout_marginTop="15dp"
+            <Button
                 android:id="@+id/reset"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Mot de passe oublié ?"
+                android:text="Réinitialiser"
                 android:textAllCaps="false"
-                android:textColor="#D6D6D6"
-                ></TextView>
+                android:layout_marginVertical="30dp"
+                ></Button>
+
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textAllCaps="false"
+            android:textColor="#D6D6D6"
+            android:gravity="center"
+            ></TextView>
 
     </LinearLayout>
 

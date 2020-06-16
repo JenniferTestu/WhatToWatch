@@ -22,7 +22,7 @@ public class LoginActivity extends AppCompatActivity {
 
     EditText tv_identif,tv_mdp;
     Button connexion;
-    TextView inscription;
+    TextView inscription,reset;
     FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
@@ -38,8 +38,17 @@ public class LoginActivity extends AppCompatActivity {
 
         connexion = findViewById(R.id.connexion);
         inscription = findViewById(R.id.inscription);
+        reset = findViewById(R.id.reset);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
+
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(LoginActivity.this, ResetActivity.class);
+                startActivity(i);
+            }
+        });
 /*
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
