@@ -37,6 +37,8 @@ public class SignOnActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_on);
 
+        getSupportActionBar().hide();
+
         tv_prenom = findViewById(R.id.prenom);
         tv_identif = findViewById(R.id.identifiant);
         tv_mdp = findViewById(R.id.mdp);

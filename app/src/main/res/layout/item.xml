@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
+    android:layout_gravity="top|center"
     android:clipToPadding="false"
     android:outlineProvider="bounds"
     android:paddingLeft="20sp"
-    android:paddingTop="10sp"
     android:paddingRight="20sp"
-    android:paddingBottom="10sp">
+    android:paddingBottom="10sp"
+    android:layout_marginTop="20dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"

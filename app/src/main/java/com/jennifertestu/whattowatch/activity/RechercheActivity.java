@@ -42,7 +42,7 @@ import retrofit2.Response;
 public class RechercheActivity extends AppCompatActivity {
 
     private Recherche recherche;
-
+    private PlateformeAdapter mAdapter;
     private AutoCompleteAdapter adapter;
     private static final int TRIGGER_AUTO_COMPLETE = 100;
     private static final long AUTO_COMPLETE_DELAY = 300;
@@ -142,7 +142,8 @@ public class RechercheActivity extends AppCompatActivity {
         final RecyclerView plateformes = findViewById(R.id.plateformes);
 
         // Plateformes
-        PlateformeAdapter mAdapter = new PlateformeAdapter(Plateforme.values(),recherche.getProviders());
+        if(!json.equals("")) mAdapter = new PlateformeAdapter(Plateforme.values(),recherche.getProviders());
+        else mAdapter = new PlateformeAdapter(Plateforme.values(),recherche.getProviders());
         GridLayoutManager manager = new GridLayoutManager(this,5);
         //manager.setOrientation(RecyclerView.HORIZONTAL);
         plateformes.setHasFixedSize(true);

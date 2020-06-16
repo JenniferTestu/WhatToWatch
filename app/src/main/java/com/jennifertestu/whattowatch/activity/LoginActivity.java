@@ -31,6 +31,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        getSupportActionBar().hide();
+
         tv_identif = findViewById(R.id.identifiant);
         tv_mdp = findViewById(R.id.mdp);
 

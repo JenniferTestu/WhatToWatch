@@ -1,6 +1,7 @@
 package com.jennifertestu.whattowatch.activity;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -33,6 +34,7 @@ import com.jennifertestu.whattowatch.model.OffresResultats;
 import com.jennifertestu.whattowatch.model.Recherche;
 import com.jennifertestu.whattowatch.model.ExternalID;
 import com.jennifertestu.whattowatch.model.VideosResultats;
+import com.jennifertestu.whattowatch.utils.ActionsMenu;
 import com.jennifertestu.whattowatch.utils.BlurImage;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 import com.squareup.picasso.Picasso;
@@ -65,6 +67,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ActionsMenu.menuPrincipal(this);
+    
 
         // Deconnexion
         ImageView deco = findViewById(R.id.deco);

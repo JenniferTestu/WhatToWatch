@@ -29,6 +29,7 @@ import com.jennifertestu.whattowatch.adapter.ToWatchAdapter;
 import com.jennifertestu.whattowatch.communication.ConnexionAPI;
 import com.jennifertestu.whattowatch.model.Film;
 import com.jennifertestu.whattowatch.model.GroupeOffres;
+import com.jennifertestu.whattowatch.utils.ActionsMenu;
 import com.jennifertestu.whattowatch.utils.RecyclerItemTouchHelper;
 
 import java.util.ArrayList;
@@ -53,6 +54,9 @@ public class WishlistActivity extends AppCompatActivity implements RecyclerItemT
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wishlist);
+
+        ActionsMenu.menuPrincipal(this);
+
 
         recyclerView = findViewById(R.id.recyclerView);
 
