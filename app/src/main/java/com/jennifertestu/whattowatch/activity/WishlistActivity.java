@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -47,6 +48,7 @@ public class WishlistActivity extends AppCompatActivity implements RecyclerItemT
 
     private RecyclerView recyclerView;
     private ToWatchAdapter recyclerAdapter;
+    private TextView tvVide;
 
     private ArrayList<Film> listeFilms = new ArrayList<Film>();
 
@@ -57,6 +59,7 @@ public class WishlistActivity extends AppCompatActivity implements RecyclerItemT
 
         ActionsMenu.menuPrincipal(this);
 
+        tvVide = findViewById(R.id.tvVide);
 
         recyclerView = findViewById(R.id.recyclerView);
 
@@ -96,6 +99,8 @@ public class WishlistActivity extends AppCompatActivity implements RecyclerItemT
                                                                      @Override
                                                                      public void onResponse(Call<GroupeOffres> call, Response<GroupeOffres> response) {
 
+                                                                         if (listeFilms.isEmpty()) tvVide.setVisibility(View.GONE);
+
                                                                          GroupeOffres resultats = response.body();
                                                                          film.setListeOffres(resultats.getOffres());
                                                                          film.setAge(resultats.getAgeCertification());
@@ -103,6 +108,7 @@ public class WishlistActivity extends AppCompatActivity implements RecyclerItemT
                                                                          film.setIdFirebase(document.getId());
                                                                          listeFilms.add(film);
                                                                          recyclerAdapter.notifyDataSetChanged();
+
                                                                      }
 
                                                                      @Override
@@ -121,6 +127,9 @@ public class WishlistActivity extends AppCompatActivity implements RecyclerItemT
                                             }
                                         });
                             }
+
+
+
                         } else {
                             Log.d("Problème", "Error getting documents: ", task.getException());
                         }
@@ -137,6 +146,7 @@ public class WishlistActivity extends AppCompatActivity implements RecyclerItemT
 
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT, this);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
+
 
     }
 
@@ -177,6 +187,7 @@ public class WishlistActivity extends AppCompatActivity implements RecyclerItemT
                                     public void onSuccess(DocumentReference documentReference) {
                                         Toast.makeText(WishlistActivity.this, "Vous n'avez pas aimé " + name, Toast.LENGTH_LONG).show();
                                         recyclerAdapter.removeItem(viewHolder.getAdapterPosition());
+                                        if (listeFilms.isEmpty()) tvVide.setVisibility(View.VISIBLE);
                                     }
                                 });
 
@@ -218,6 +229,8 @@ public class WishlistActivity extends AppCompatActivity implements RecyclerItemT
                                     public void onSuccess(DocumentReference documentReference) {
                                         Toast.makeText(WishlistActivity.this, "Vous avez aimé " + name, Toast.LENGTH_LONG).show();
                                         recyclerAdapter.removeItem(viewHolder.getAdapterPosition());
+                                        if (listeFilms.isEmpty()) tvVide.setVisibility(View.VISIBLE);
+
                                     }
                                 });
 

@@ -173,11 +173,12 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
             real.setText("Réalisé par " + film_item.getCreated_by());
         }
 
-        credits.setText("Avec : "+film_item.getCredits().getCast().get(0).getName());
-        for(int compt=1;compt<5;compt++){
-            credits.append(", "+film_item.getCredits().getCast().get(compt).getName());
+        if(!film_item.getCredits().getCast().isEmpty()) {
+            credits.setText("Avec : " + film_item.getCredits().getCast().get(0).getName());
+            for (int compt = 1; compt < 5 && compt < film_item.getCredits().getCast().size(); compt++) {
+                credits.append(", " + film_item.getCredits().getCast().get(compt).getName());
+            }
         }
-
         longue_description.setText(film_item.getLongueDesc());
 
         makeTextViewResizable(longue_description,5,"Continuer",true);
@@ -256,7 +257,8 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
 
         // Type
         if(film_item.getType().matches("show")) {
-            type.setText("Série de "+film_item.getSeason_number()+" saisons.\nUn épisode dure "+film_item.getEpisode_run_time_average()+"min");
+            if(film_item.getEpisode_run_time_average()==0) type.setText("Série de "+film_item.getSeason_number()+" saisons\nDurée d'un épisode inconnue");
+            else type.setText("Série de "+film_item.getSeason_number()+" saisons\nUn épisode dure "+film_item.getEpisode_run_time_average()+"min");
         }else {
             type.setText("Film de "+film_item.getRuntime()/60+"h"+film_item.getRuntime()%60);
             if (film_item.getAge()!=null && film_item.getAge().matches("U")) {

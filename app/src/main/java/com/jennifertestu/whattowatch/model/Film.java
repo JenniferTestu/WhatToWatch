@@ -272,6 +272,7 @@ public class Film implements Serializable {
     }
 
     public int getEpisode_run_time_average() {
+        if (episode_run_time.size()==0 || episode_run_time==null) return 0;
         int count = 0;
         for (Integer i:episode_run_time) {
             count += i;

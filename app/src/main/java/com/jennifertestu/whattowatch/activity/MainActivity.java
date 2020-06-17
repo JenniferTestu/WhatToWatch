@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Film> listeFilms = new ArrayList<Film>();
     private FilmAdapter filmAdapter;
     private SwipeFlingAdapterView flingContainer;
+    private TextView tvVide;
 
     FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
@@ -69,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ActionsMenu.menuPrincipal(this);
-    
 
         // Deconnexion
         ImageView deco = findViewById(R.id.deco);
@@ -238,6 +239,10 @@ public class MainActivity extends AppCompatActivity {
                 //oui();
             }
         });
+
+        tvVide = findViewById(R.id.tvVide);
+        if (listeFilms.isEmpty()) tvVide.setVisibility(View.VISIBLE);
+        else tvVide.setVisibility(View.GONE);
 
     }
 
@@ -564,6 +569,10 @@ public class MainActivity extends AppCompatActivity {
             Picasso.get()
                     .load("https://image.tmdb.org/t/p/" + "w780" + listeFilms.get(0).getUrlAffiche())
                     .into(target);
+        }else {
+            final ImageView background = findViewById(R.id.background);
+            background.setImageResource(android.R.color.transparent);
+            tvVide.setVisibility(View.VISIBLE);
         }
     }
 
