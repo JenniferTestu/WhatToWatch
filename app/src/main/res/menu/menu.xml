@@ -7,15 +7,12 @@
     android:layout_height="56dp"
     android:background="@color/colorPrimaryDark">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_centerInParent="true"
+        android:layout_gravity="center_horizontal|center"
         android:gravity="center">
 
     <ImageButton
@@ -28,7 +25,6 @@
         android:src="@drawable/ace_of_hearts"
         android:background="@null"
         app:showAsAction="always"
-        android:layout_gravity="center_horizontal|center"
         android:gravity="center"></ImageButton>
 
     <ImageButton
@@ -41,7 +37,6 @@
         android:src="@drawable/compagnion"
         android:background="@null"
         app:showAsAction="always"
-        android:layout_gravity="center_horizontal|center"
         android:gravity="center"></ImageButton>
 
     <ImageButton
@@ -53,9 +48,8 @@
         android:src="@drawable/ic_exit_to_app_black_24dp"
         android:background="@null"
         app:showAsAction="always"
-        android:layout_gravity="center_horizontal|center"
         android:gravity="center"></ImageButton>
 
     </LinearLayout>
-    </RelativeLayout>
+
 </androidx.appcompat.widget.Toolbar>
