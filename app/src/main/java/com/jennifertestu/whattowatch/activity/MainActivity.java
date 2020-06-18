@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
+    private Recherche recherche;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +72,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ActionsMenu.menuPrincipal(this);
+
+        final SharedPreferences mPrefs = getSharedPreferences("Recherche", 0);
+        // Récupérer la recherche et la convertir en objet Recherche
+        Gson gson = new Gson();
+        String json = mPrefs.getString("Champs", "");
+        recherche = gson.fromJson(json, Recherche.class);
+        recherche.setPage(0);
 
         // Deconnexion
         ImageView deco = findViewById(R.id.deco);
@@ -198,8 +206,14 @@ public class MainActivity extends AppCompatActivity {
                 //filmAdapter.notifyDataSetChanged();
                 Log.d("LIST", "notified");
                 //i++;
+                recupererFilms();
                 filmAdapter.notifyDataSetChanged();
                 changerBackground();
+
+                Toast.makeText(MainActivity.this, "D'autres divertissements ...", Toast.LENGTH_LONG).show();
+
+
+
             }
 
             @Override
@@ -380,11 +394,9 @@ public class MainActivity extends AppCompatActivity {
 
 */
 
-        Recherche recherche;
-        final SharedPreferences mPrefs = getSharedPreferences("Recherche", 0);
-        // Récupérer la recherche et la convertir en objet Recherche
+        recherche.pageIncrementation();
         Gson gson = new Gson();
-        String json = mPrefs.getString("Champs", "");
+        String json = gson.toJson(recherche);
 
         if(json.equals("")){
 
