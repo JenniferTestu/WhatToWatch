@@ -77,7 +77,8 @@ public class WishlistActivity extends AppCompatActivity implements RecyclerItemT
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        Log.d("VALEUR", document.getId() + " => " + document.get("num_random"));
+                        compt = Integer.parseInt(document.get("num_random").toString());
+                        Log.d("VALEUR", document.getId() + " => " + compt);
                     }
                 } else {
                     Log.d("VALEUR", "Error getting documents: ", task.getException());

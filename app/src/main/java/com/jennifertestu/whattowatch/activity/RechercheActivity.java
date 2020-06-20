@@ -278,6 +278,8 @@ public class RechercheActivity extends AppCompatActivity {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         max_random = Integer.parseInt(document.get("num_random").toString());
                         Log.e("VALEUR", "Max num random : " + max_random);
+                        surprise.setClickable(true);
+                        surprise.setEnabled(true);
                     }
                 } else {
                         surprise.setClickable(false);
@@ -289,8 +291,7 @@ public class RechercheActivity extends AppCompatActivity {
         if(max_random==0){
             surprise.setClickable(false);
             surprise.setEnabled(false);
-        }else {
-
+        }
             surprise.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -310,6 +311,11 @@ public class RechercheActivity extends AppCompatActivity {
 
                                     Intent i = new Intent(RechercheActivity.this, MainActivity.class);
                                     i.putExtra("surprise", document2.get("id_jw").toString());
+                                    if(document2.get("type_jw").toString().equals("movie")) {
+                                        i.putExtra("type_surprise", "tm");
+                                    }else{
+                                        i.putExtra("type_surprise", "ts");
+                                    }
                                     startActivity(i);
                                 }
                             } else {
@@ -323,7 +329,7 @@ public class RechercheActivity extends AppCompatActivity {
                 }
 
             });
-        }
+
 
         // Bouton rechercher
         rechercher.setOnClickListener(new View.OnClickListener() {

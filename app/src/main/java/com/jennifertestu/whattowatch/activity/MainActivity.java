@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvVide;
 
     private String surprise = "";
+    private String type_surprise = "";
 
     FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
@@ -79,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
         ActionsMenu.menuPrincipal(this);
 
         surprise = getIntent().getStringExtra("surprise");
+        type_surprise = getIntent().getStringExtra("type_surprise");
 
         final SharedPreferences mPrefs = getSharedPreferences("Recherche", 0);
         // Récupérer la recherche et la convertir en objet Recherche
@@ -475,7 +477,7 @@ public class MainActivity extends AppCompatActivity {
 
             ConnexionAPI.getInstance()
                     .getJWApi()
-                    .getRecommandations("ts"+surprise,json)
+                    .getRecommandations(type_surprise+surprise,json)
                     .enqueue(new Callback<OffresResultats>() {
 
                         @Override
