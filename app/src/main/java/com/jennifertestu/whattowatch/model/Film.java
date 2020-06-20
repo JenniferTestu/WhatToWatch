@@ -285,11 +285,15 @@ public class Film implements Serializable {
     }
 
     public String getCreated_by() {
-        String result = created_by.get(0).getName();
-        for(int i=1;i<created_by.size();i++) {
+        if(created_by!=null && !created_by.isEmpty()) {
+            String result = created_by.get(0).getName();
+            for (int i = 1; i < created_by.size(); i++) {
                 result = result + ", " + created_by.get(i).getName();
+            }
+            return result;
+        }else {
+            return null;
         }
-        return result;
     }
 
     public void setCreated_by(ArrayList<Createur> created_by) {

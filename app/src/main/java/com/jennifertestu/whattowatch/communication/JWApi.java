@@ -5,6 +5,8 @@ import com.jennifertestu.whattowatch.model.OffresResultats;
 import com.jennifertestu.whattowatch.model.PersonnesResultats;
 import com.jennifertestu.whattowatch.model.Recherche;
 
+import org.json.JSONObject;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -21,4 +23,7 @@ public interface JWApi {
 
     @GET("content/titles/fr_FR/popular")
     public Call<PersonnesResultats> getPersonnes(@Query("body") String json);
+
+    @GET("content/titles/fr_FR/recommendations")
+    public Call<OffresResultats> getRecommandations(@Query("jw_entity_ids") String jw_id, @Query("body") JSONObject json);
 }

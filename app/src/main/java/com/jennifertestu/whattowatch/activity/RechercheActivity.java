@@ -1,5 +1,6 @@
 package com.jennifertestu.whattowatch.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +23,14 @@ import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 import com.jennifertestu.whattowatch.R;
 import com.jennifertestu.whattowatch.adapter.AutoCompleteAdapter;
@@ -38,6 +47,7 @@ import org.florescu.android.rangeseekbar.RangeSeekBar;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import okhttp3.internal.Internal;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -51,6 +61,7 @@ public class RechercheActivity extends AppCompatActivity {
     private static final long AUTO_COMPLETE_DELAY = 300;
     private Handler handler;
     private Personne personne = null;
+    private int max_random = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,6 +170,8 @@ public class RechercheActivity extends AppCompatActivity {
 
         Button annuler = findViewById(R.id.annuler);
         final Button rechercher = findViewById(R.id.rechercher);
+        final Button surprise = findViewById(R.id.surprise);
+
         final RecyclerView plateformes = findViewById(R.id.plateformes);
 
         // Plateformes
@@ -248,6 +261,69 @@ public class RechercheActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        // Bouton surprise
+        FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+        FirebaseFirestore fStore = FirebaseFirestore.getInstance();
+
+        String utilisateurId = mFirebaseAuth.getCurrentUser().getUid();
+
+        final CollectionReference collectionHisto = fStore.collection("Utilisateurs").document(utilisateurId).collection("Historique");
+        Query query = collectionHisto.orderBy("num_random").limitToLast(1);
+
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        max_random = Integer.parseInt(document.get("num_random").toString());
+                        Log.e("VALEUR", "Max num random : " + max_random);
+                    }
+                } else {
+                        surprise.setClickable(false);
+                        Log.d("VALEUR", "Error getting documents: ", task.getException());
+                }
+            }
+        });
+
+        if(max_random==0){
+            surprise.setClickable(false);
+            surprise.setEnabled(false);
+        }else {
+
+            surprise.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    int random = 1 + (int) (Math.random() * ((max_random - 1) + 1));
+                    Log.e("VALEUR", "Num random choisi : " + random);
+
+
+                    Query query_random = collectionHisto.whereEqualTo("num_random", random);
+                    query_random.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document2 : task.getResult()) {
+
+                                    Log.e("VALEUR", "ID JW : " + document2.get("id_jw"));
+
+                                    Intent i = new Intent(RechercheActivity.this, MainActivity.class);
+                                    i.putExtra("surprise", document2.get("id_jw").toString());
+                                    startActivity(i);
+                                }
+                            } else {
+                                Log.e("VALEUR", "ERREUR ID JW : " + task.getException());
+
+                            }
+                        }
+                    });
+
+
+                }
+
+            });
+        }
 
         // Bouton rechercher
         rechercher.setOnClickListener(new View.OnClickListener() {

@@ -252,14 +252,17 @@ public class ToWatchAdapter extends RecyclerView.Adapter<ToWatchAdapter.FilmView
                 holder.real.setText("Réalisé par " + film.getRealisateurs());
             }
         }else {
-            holder.real.setText("Réalisé par " + film.getCreated_by());
+            if (film.getCreated_by() != null) {
+                holder.real.setText("Réalisé par " + film.getCreated_by());
+            }
         }
 
-        holder.credits.setText("Avec : "+film.getCredits().getCast().get(0).getName());
-        for(int compt=1;compt<5;compt++){
-            holder.credits.append(", "+film.getCredits().getCast().get(compt).getName());
+        if(!film.getCredits().getCast().isEmpty()) {
+            holder.credits.setText("Avec : " + film.getCredits().getCast().get(0).getName());
+            for (int compt = 1; compt < 5 && compt < film.getCredits().getCast().size(); compt++) {
+                holder.credits.append(", " + film.getCredits().getCast().get(compt).getName());
+            }
         }
-
         holder.longue_description.setText(film.getLongueDesc());
 
         //makeTextViewResizable(holder.longue_description,5,"Continuer",true);

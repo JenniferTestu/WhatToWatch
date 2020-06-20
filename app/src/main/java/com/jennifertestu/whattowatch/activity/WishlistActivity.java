@@ -50,6 +50,8 @@ public class WishlistActivity extends AppCompatActivity implements RecyclerItemT
     private ToWatchAdapter recyclerAdapter;
     private TextView tvVide;
 
+    private int compt = 0;
+
     private ArrayList<Film> listeFilms = new ArrayList<Film>();
 
     @Override
@@ -67,6 +69,22 @@ public class WishlistActivity extends AppCompatActivity implements RecyclerItemT
         FirebaseFirestore fStore = FirebaseFirestore.getInstance();
 
         String utilisateurId = mFirebaseAuth.getCurrentUser().getUid();
+
+        final CollectionReference collectionHisto = fStore.collection("Utilisateurs").document(utilisateurId).collection("Historique");
+        Query query = collectionHisto.orderBy("num_random").limitToLast(1);;
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d("VALEUR", document.getId() + " => " + document.get("num_random"));
+                    }
+                } else {
+                    Log.d("VALEUR", "Error getting documents: ", task.getException());
+                }
+            }
+        });
+
         CollectionReference collectionReference = fStore.collection("Utilisateurs").document(utilisateurId).collection("ToWatch");
         collectionReference
                 .get()
@@ -154,7 +172,7 @@ public class WishlistActivity extends AppCompatActivity implements RecyclerItemT
     public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction, int position) {
         if (viewHolder instanceof ToWatchAdapter.FilmViewHolder) {
             // get the removed item name to display it in snack bar
-            final String name = listeFilms.get(viewHolder.getAdapterPosition()).getTitre();
+            //final String name = listeFilms.get(viewHolder.getAdapterPosition()).getTitre();
             final Film deletedItem = listeFilms.get(viewHolder.getAdapterPosition());
 
             if(direction==ItemTouchHelper.LEFT) {
@@ -185,7 +203,9 @@ public class WishlistActivity extends AppCompatActivity implements RecyclerItemT
                                 collectionHistorique.add(historique).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                     @Override
                                     public void onSuccess(DocumentReference documentReference) {
-                                        Toast.makeText(WishlistActivity.this, "Vous n'avez pas aimé " + name, Toast.LENGTH_LONG).show();
+                                        if(listeFilms.get(viewHolder.getAdapterPosition()).getType().matches("movie"))Toast.makeText(WishlistActivity.this, "Vous n'avez pas aimé " + deletedItem.getTitre(), Toast.LENGTH_LONG).show();
+                                        else Toast.makeText(WishlistActivity.this, "Vous n'avez pas aimé " + deletedItem.getNomSerie(), Toast.LENGTH_LONG).show();
+
                                         recyclerAdapter.removeItem(viewHolder.getAdapterPosition());
                                         if (listeFilms.isEmpty()) tvVide.setVisibility(View.VISIBLE);
                                     }
@@ -194,7 +214,10 @@ public class WishlistActivity extends AppCompatActivity implements RecyclerItemT
                             }
                         } else {
                             Log.d("Probleme", "Error getting documents: ", task.getException());
-                            Toast.makeText(WishlistActivity.this, "Echec de la suppression de "+name, Toast.LENGTH_LONG).show();
+
+                            if(listeFilms.get(viewHolder.getAdapterPosition()).getType().matches("movie"))Toast.makeText(WishlistActivity.this, "Echec de la suppression de " + deletedItem.getTitre(), Toast.LENGTH_LONG).show();
+                            else Toast.makeText(WishlistActivity.this, "Echec de la suppression de " + deletedItem.getNomSerie(), Toast.LENGTH_LONG).show();
+
                         }
                     }
                 });
@@ -222,12 +245,16 @@ public class WishlistActivity extends AppCompatActivity implements RecyclerItemT
                                 historique.put("id_tmdb",deletedItem.getId());
                                 historique.put("id_jw",deletedItem.getIdJw());
                                 historique.put("type_jw",deletedItem.getType());
+                                historique.put("num_random",++compt);
                                 historique.put("aime",true);
 
                                 collectionHistorique.add(historique).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                     @Override
                                     public void onSuccess(DocumentReference documentReference) {
-                                        Toast.makeText(WishlistActivity.this, "Vous avez aimé " + name, Toast.LENGTH_LONG).show();
+
+                                        if(listeFilms.get(viewHolder.getAdapterPosition()).getType().matches("movie"))Toast.makeText(WishlistActivity.this, "Vous avez aimez " + deletedItem.getTitre(), Toast.LENGTH_LONG).show();
+                                        else Toast.makeText(WishlistActivity.this, "Vous avez aimez " + deletedItem.getNomSerie(), Toast.LENGTH_LONG).show();
+
                                         recyclerAdapter.removeItem(viewHolder.getAdapterPosition());
                                         if (listeFilms.isEmpty()) tvVide.setVisibility(View.VISIBLE);
 
@@ -237,7 +264,9 @@ public class WishlistActivity extends AppCompatActivity implements RecyclerItemT
                             }
                         } else {
                             Log.d("Probleme", "Error getting documents: ", task.getException());
-                            Toast.makeText(WishlistActivity.this, "Echec de la suppression de "+name, Toast.LENGTH_LONG).show();
+
+                            if(listeFilms.get(viewHolder.getAdapterPosition()).getType().matches("movie"))Toast.makeText(WishlistActivity.this, "Echec de la suppression de " + deletedItem.getTitre(), Toast.LENGTH_LONG).show();
+                            else Toast.makeText(WishlistActivity.this, "Echec de la suppression de " + deletedItem.getNomSerie(), Toast.LENGTH_LONG).show();
                         }
                     }
                 });

@@ -170,7 +170,9 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
                 real.setText("Réalisé par " + film_item.getRealisateurs());
             }
         }else {
-            real.setText("Réalisé par " + film_item.getCreated_by());
+            if (film_item.getCreated_by() != null) {
+                real.setText("Réalisé par " + film_item.getCreated_by());
+            }
         }
 
         if(!film_item.getCredits().getCast().isEmpty()) {
