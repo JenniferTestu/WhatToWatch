@@ -18,11 +18,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 import com.jennifertestu.whattowatch.BuildConfig;
 import com.jennifertestu.whattowatch.adapter.FilmAdapter;
@@ -283,22 +287,37 @@ public class MainActivity extends AppCompatActivity {
         FirebaseFirestore fStore = FirebaseFirestore.getInstance();
 
         String utilisateurId = mFirebaseAuth.getCurrentUser().getUid();
-        CollectionReference collectionReference = fStore.collection("Utilisateurs").document(utilisateurId).collection("ToWatch");
+        final CollectionReference collectionReference = fStore.collection("Utilisateurs").document(utilisateurId).collection("ToWatch");
 
-        Map<String,Object> towatch = new HashMap<>();
-        towatch.put("id_tmdb",filmPrecedent.getId());
-        towatch.put("id_jw",filmPrecedent.getIdJw());
-        towatch.put("type_jw",filmPrecedent.getType());
-
-
-        collectionReference.add(towatch).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+        collectionReference.whereEqualTo("id_tmdb",filmPrecedent.getId()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onSuccess(DocumentReference documentReference) {
-                Toast.makeText(MainActivity.this, "Film ajouté", Toast.LENGTH_SHORT).show();
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    if (task.getResult().isEmpty()) {
+
+                        Map<String,Object> towatch = new HashMap<>();
+                        towatch.put("id_tmdb",filmPrecedent.getId());
+                        towatch.put("id_jw",filmPrecedent.getIdJw());
+                        towatch.put("type_jw",filmPrecedent.getType());
+
+                        collectionReference.add(towatch).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                Toast.makeText(MainActivity.this, "Ajouté", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        //Toast.makeText(MainActivity.this, "Oui!",Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(MainActivity.this, "Déjà présent dans la ToWatchList", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Log.d("PRESENT", "Error getting documents: ", task.getException());
+                }
             }
         });
 
-        //Toast.makeText(MainActivity.this, "Oui!",Toast.LENGTH_SHORT).show();
+
     }
 
     public void recupererFilms(){
