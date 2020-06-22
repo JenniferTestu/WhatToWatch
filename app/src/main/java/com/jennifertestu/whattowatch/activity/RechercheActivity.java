@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.GridLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -104,6 +105,8 @@ public class RechercheActivity extends AppCompatActivity {
 
         final RangeSeekBar bar = findViewById(R.id.seekBar);
 
+        final TextView tvDuree = findViewById(R.id.tv_duree);
+        final LinearLayout etDuree = findViewById(R.id.et_duree);
         final EditText min_duree = findViewById(R.id.min_duree);
         final EditText max_duree = findViewById(R.id.max_duree);
 
@@ -121,9 +124,46 @@ public class RechercheActivity extends AppCompatActivity {
                 if(films.isChecked()){
                     tvAge.setVisibility(View.VISIBLE);
                     grille_ages.setVisibility(View.VISIBLE);
-                }else{
+
+                    tvDuree.setVisibility(View.VISIBLE);
+                    etDuree.setVisibility(View.VISIBLE);
+                }else if(!films.isChecked() && !series.isChecked()){
+                    tvAge.setVisibility(View.VISIBLE);
+                    grille_ages.setVisibility(View.VISIBLE);
+
+                    tvDuree.setVisibility(View.VISIBLE);
+                    etDuree.setVisibility(View.VISIBLE);
+                }else {
                     tvAge.setVisibility(View.GONE);
                     grille_ages.setVisibility(View.GONE);
+
+                    tvDuree.setVisibility(View.GONE);
+                    etDuree.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        series.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(films.isChecked()){
+                    tvAge.setVisibility(View.VISIBLE);
+                    grille_ages.setVisibility(View.VISIBLE);
+
+                    tvDuree.setVisibility(View.VISIBLE);
+                    etDuree.setVisibility(View.VISIBLE);
+                }else if(!films.isChecked() && !series.isChecked()){
+                    tvAge.setVisibility(View.VISIBLE);
+                    grille_ages.setVisibility(View.VISIBLE);
+
+                    tvDuree.setVisibility(View.VISIBLE);
+                    etDuree.setVisibility(View.VISIBLE);
+                }else {
+                    tvAge.setVisibility(View.GONE);
+                    grille_ages.setVisibility(View.GONE);
+
+                    tvDuree.setVisibility(View.GONE);
+                    etDuree.setVisibility(View.GONE);
                 }
             }
         });
@@ -217,8 +257,17 @@ public class RechercheActivity extends AppCompatActivity {
             bar.setSelectedMaxValue(recherche.getRelease_year_until());
 
             // Durée
-            if(recherche.getMin_runtime()!=0)min_duree.setText(String.valueOf(recherche.getMin_runtime()));
-            if(recherche.getMax_runtime()!=0)max_duree.setText(String.valueOf(recherche.getMax_runtime()));
+            if(recherche.getContent_types().contains("movie") || recherche.getContent_types().isEmpty()) {
+                tvDuree.setVisibility(View.VISIBLE);
+                etDuree.setVisibility(View.VISIBLE);
+                if (recherche.getMin_runtime() != 0)
+                    min_duree.setText(String.valueOf(recherche.getMin_runtime()));
+                if (recherche.getMax_runtime() != 0)
+                    max_duree.setText(String.valueOf(recherche.getMax_runtime()));
+            }else {
+                tvDuree.setVisibility(View.GONE);
+                etDuree.setVisibility(View.GONE);
+            }
 
             // Personne
             if(!nom_personne.matches("")){
@@ -231,7 +280,7 @@ public class RechercheActivity extends AppCompatActivity {
             }
 
             // Age
-            if(!recherche.getContent_types().contains("movie")){
+            if(!recherche.getContent_types().contains("movie") || recherche.getContent_types().isEmpty()){
                 tvAge.setVisibility(View.GONE);
                 grille_ages.setVisibility(View.GONE);
             }else {
@@ -377,8 +426,12 @@ public class RechercheActivity extends AppCompatActivity {
                 new_recherche.setRelease_year_until((Integer) bar.getSelectedMaxValue());
 
                 // Durée
-                if (min_duree.getText().toString().trim().length() > 0)new_recherche.setMin_runtime(Integer.valueOf(min_duree.getText().toString()));
-                if (max_duree.getText().toString().trim().length() > 0)new_recherche.setMax_runtime(Integer.valueOf(max_duree.getText().toString()));
+                if(films.isChecked() || new_recherche.getContent_types().isEmpty()) {
+                    if (min_duree.getText().toString().trim().length() > 0)
+                        new_recherche.setMin_runtime(Integer.valueOf(min_duree.getText().toString()));
+                    if (max_duree.getText().toString().trim().length() > 0)
+                        new_recherche.setMax_runtime(Integer.valueOf(max_duree.getText().toString()));
+                }
 
                 // Personne
                 if(tv_acteur.getText().toString().trim().matches("") || personne==null){
@@ -388,12 +441,14 @@ public class RechercheActivity extends AppCompatActivity {
                 }
 
                 // Age
-                if(u.isChecked())age_certifications.add("U");
-                if(moins_10.isChecked())age_certifications.add("10");
-                if(moins_12.isChecked())age_certifications.add("12");
-                if(moins_16.isChecked())age_certifications.add("16");
-                if(moins_18.isChecked())age_certifications.add("18");
-                new_recherche.setAge_certifications(age_certifications);
+                if(films.isChecked() || new_recherche.getContent_types().isEmpty()) {
+                    if (u.isChecked()) age_certifications.add("U");
+                    if (moins_10.isChecked()) age_certifications.add("10");
+                    if (moins_12.isChecked()) age_certifications.add("12");
+                    if (moins_16.isChecked()) age_certifications.add("16");
+                    if (moins_18.isChecked()) age_certifications.add("18");
+                    new_recherche.setAge_certifications(age_certifications);
+                }
 
                 // Monetisation
                 new_recherche.setMonetization_types(monetization_types);
