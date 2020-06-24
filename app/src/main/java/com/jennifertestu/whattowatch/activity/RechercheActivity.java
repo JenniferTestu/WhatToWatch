@@ -69,7 +69,7 @@ public class RechercheActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recherche);
 
-        ActionsMenu.menuPrincipal(this);
+        ActionsMenu.menuPrincipal(this,getClass().getSimpleName());
 
         // Recherche
         final SharedPreferences mPrefs = getSharedPreferences("Recherche", 0);
@@ -77,6 +77,7 @@ public class RechercheActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String json = mPrefs.getString("Champs", "");
         recherche = gson.fromJson(json, Recherche.class);
+        if (recherche==null)recherche= new Recherche();
         String nom_personne = mPrefs.getString("Personne", "");
 
 
@@ -215,7 +216,7 @@ public class RechercheActivity extends AppCompatActivity {
         final RecyclerView plateformes = findViewById(R.id.plateformes);
 
         // Plateformes
-        if(!json.equals("")) mAdapter = new PlateformeAdapter(Plateforme.values(),recherche.getProviders());
+        if(!json.equals("")||recherche!=null) mAdapter = new PlateformeAdapter(Plateforme.values(),recherche.getProviders());
         else mAdapter = new PlateformeAdapter(Plateforme.values(),recherche.getProviders());
         GridLayoutManager manager = new GridLayoutManager(this,5);
         //manager.setOrientation(RecyclerView.HORIZONTAL);

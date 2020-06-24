@@ -16,7 +16,9 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.Gson;
 import com.jennifertestu.whattowatch.R;
+import com.jennifertestu.whattowatch.model.Recherche;
 
 import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip;
 
@@ -47,9 +49,21 @@ public class ChargementActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if (mFirebaseUser != null) {
-                    Intent i = new Intent(ChargementActivity.this, MainActivity.class);
-                    startActivity(i);
-                    finish();
+                    final SharedPreferences mPrefs = getSharedPreferences("Recherche", 0);
+                    // Récupérer la recherche et la convertir en objet Recherche
+                    Gson gson = new Gson();
+                    String json = mPrefs.getString("Champs", "");
+                    Recherche recherche = gson.fromJson(json, Recherche.class);
+
+                    if (recherche == null) {
+                        Intent i = new Intent(ChargementActivity.this, RechercheActivity.class);
+                        startActivity(i);
+                        finish();
+                    } else{
+                        Intent i = new Intent(ChargementActivity.this, MainActivity.class);
+                        startActivity(i);
+                        finish();
+                    }
                 } else {
                     Intent i = new Intent(ChargementActivity.this, LoginActivity.class);
                     startActivity(i);

@@ -6,18 +6,18 @@ import java.util.List;
 
 public class Recherche implements Serializable {
 
-    private ArrayList<String> age_certifications;
-    private ArrayList<String> content_types;
-    private ArrayList<String> genres;
+    private ArrayList<String> age_certifications = new ArrayList<>();
+    private ArrayList<String> content_types = new ArrayList<>();
+    private ArrayList<String> genres = new ArrayList<>();
     private Double min_price;
     private Double max_price;
-    private ArrayList<String> monetization_types;
-    private ArrayList<String> providers;
+    private ArrayList<String> monetization_types = new ArrayList<>();
+    private ArrayList<String> providers = new ArrayList<>();
     private int release_year_from;
     private int release_year_until;
     private int min_runtime;
     private int max_runtime;
-    private int page;
+    private int page = 0;
     private int page_size;
     private int person_id;
 
