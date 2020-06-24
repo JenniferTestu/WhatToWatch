@@ -59,7 +59,7 @@ public class WishlistActivity extends AppCompatActivity implements RecyclerItemT
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wishlist);
 
-        ActionsMenu.menuPrincipal(this);
+        ActionsMenu.menuPrincipal(this,getClass().getSimpleName());
 
         tvVide = findViewById(R.id.tvVide);
 

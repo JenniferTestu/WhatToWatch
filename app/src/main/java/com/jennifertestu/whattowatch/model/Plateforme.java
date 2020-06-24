@@ -91,6 +91,6 @@ public enum Plateforme implements Serializable {
     }
 
     public int getPlace() {
-        return place;
+        return this.place;
     }
 }

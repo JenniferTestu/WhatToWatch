@@ -202,10 +202,18 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
         ArrayList<Offre> listeLocation = new ArrayList<Offre>();
         ArrayList<Offre> listeAchat = new ArrayList<Offre>();
 
+        film_item.getListeOffres().removeAll(Collections.singleton(null));
+
         Collections.sort(film_item.getListeOffres(), new Comparator<Offre>()
         {
             @Override
             public int compare(Offre o1, Offre o2) {
+                if (o1== null) {
+                    return (o2 == null) ? 0 : -1;
+                }
+                if (o2 == null) {
+                    return 1;
+                }
                 return Double.valueOf(o1.getRetailPrice()).compareTo(o2.getRetailPrice());
             }
         });
@@ -214,6 +222,12 @@ public class FilmAdapter extends ArrayAdapter<Film>  {
         {
             @Override
             public int compare(Offre o1, Offre o2) {
+                if (Plateforme.getById(o1.getProviderId())== null) {
+                    return (Plateforme.getById(o2.getProviderId()) == null) ? 0 : -1;
+                }
+                if (Plateforme.getById(o2.getProviderId()) == null) {
+                    return 1;
+                }
                 return Integer.valueOf(Plateforme.getById(o1.getProviderId()).getPlace()).compareTo(Plateforme.getById(o2.getProviderId()).getPlace());
             }
         });

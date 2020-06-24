@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ActionsMenu.menuPrincipal(this);
+        ActionsMenu.menuPrincipal(this,getClass().getSimpleName());
 
         surprise = getIntent().getStringExtra("surprise");
         type_surprise = getIntent().getStringExtra("type_surprise");
@@ -90,29 +90,30 @@ public class MainActivity extends AppCompatActivity {
         // Récupérer la recherche et la convertir en objet Recherche
         Gson gson = new Gson();
         String json = mPrefs.getString("Champs", "");
+
+        Log.e("RECHERCHE",json);
+
         recherche = gson.fromJson(json, Recherche.class);
+/*
+        if (recherche==null){
+            Intent i = new Intent(MainActivity.this,RechercheActivity.class);
+            startActivity(i);
+            finish();
+        }
+
         recherche.setPage(0);
+*/
 
-        // Deconnexion
-        ImageView deco = findViewById(R.id.deco);
-        deco.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                Intent i = new Intent(MainActivity.this,LoginActivity.class);
-                startActivity(i);
-            }
-        });
+        try {
+            recherche = gson.fromJson(json, Recherche.class);
+            recherche.setPage(0);
+        }catch (Exception e){
+            recherche = new Recherche();
+            Intent i = new Intent(MainActivity.this,RechercheActivity.class);
+            startActivity(i);
+            finish();
+        }
 
-        // Ecran de recherche
-        ImageButton recherche = findViewById(R.id.recherche);
-        recherche.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this,RechercheActivity.class);
-                startActivity(i);
-            }
-        });
 
         // Bouton précédent
         final ImageButton bouton_precedent = findViewById(R.id.bouton_precedent);
@@ -138,43 +139,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ImageButton bouton_wishlist = findViewById(R.id.bouton_wishlist);
-        bouton_wishlist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),WishlistActivity.class);
-                startActivity(intent);
-            }
-        });
-
 
         flingContainer = (SwipeFlingAdapterView)findViewById(R.id.frame);
-/*
-        ConnexionAPI.getInstance()
-                .getMovieApi()
-                .getFilmWithID(744,API_KEY,"fr-FR")
-                .enqueue(new Callback<Film>() {
-                    @Override
-                    public void onResponse(@NonNull Call<Film> call, @NonNull Response<Film> response) {
-                        Film film = response.body();
-
-                        System.out.println(film);
-
-                        listeFilms.add(film);
-                        filmAdapter = new FilmAdapter(getApplicationContext(), R.layout.item, listeFilms );
-
-                        flingContainer.setAdapter(filmAdapter);
-                        filmAdapter.notifyDataSetChanged();
-
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Call<Film> call, @NonNull Throwable t) {
-                        Log.e("Erreur","Oups, une erreur de requête");
-                        t.printStackTrace();
-                    }
-                });
-*/
 
         if(surprise==null)recupererFilms();
         else recupererRecommandations();
@@ -227,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
                 filmAdapter.notifyDataSetChanged();
                 changerBackground();
 
-                Toast.makeText(MainActivity.this, "D'autres divertissements ...", Toast.LENGTH_LONG).show();
+                //Toast.makeText(MainActivity.this, "D'autres divertissements ...", Toast.LENGTH_LONG).show();
 
 
 
@@ -341,7 +307,7 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onResponse(Call<OffresResultats> call, Response<OffresResultats> response) {
-                            Log.e("Je suis", "dans les offres");
+                            //Log.e("Je suis", "dans les offres");
 
                             OffresResultats offresResultats = response.body();
 
@@ -363,7 +329,7 @@ public class MainActivity extends AppCompatActivity {
 
                                                 if(response.isSuccessful()) {
 
-                                                    Log.e("Je suis", "dans le details");
+                                                    //Log.e("Je suis", "dans le details");
 
                                                     final GroupeOffres resultats = response.body();
 
@@ -384,7 +350,7 @@ public class MainActivity extends AppCompatActivity {
                                                                     .enqueue(new Callback<Film>() {
                                                                         @Override
                                                                         public void onResponse(@NonNull Call<Film> call, @NonNull Response<Film> response) {
-                                                                            Log.e("Je suis", "dans le film with id");
+                                                                            //Log.e("Je suis", "dans le film with id");
 
                                                                             if (response.isSuccessful()) {
 
@@ -392,6 +358,9 @@ public class MainActivity extends AppCompatActivity {
                                                                                 film.setListeOffres(resultats.getOffres());
                                                                                 film.setAge(resultats.getAgeCertification());
                                                                                 film.setType(resultats.getObjectType());
+
+                                                                                //Log.e("INFO", film.getTitre()+" : "+film.getListeOffres().size());
+
                                                                                 //System.out.println(film);
 /*
                                                                         ConnexionAPI.getInstance()
