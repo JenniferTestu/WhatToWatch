@@ -25,7 +25,8 @@
         android:src="@drawable/ace_of_hearts"
         android:background="@null"
         app:showAsAction="always"
-        android:gravity="center"></ImageButton>
+        android:gravity="center"
+        android:alpha="0.5"></ImageButton>
 
     <ImageButton
         android:id="@+id/recherche"
@@ -37,18 +38,33 @@
         android:src="@drawable/compagnion"
         android:background="@null"
         app:showAsAction="always"
-        android:gravity="center"></ImageButton>
+        android:gravity="center"
+        android:alpha="0.5"></ImageButton>
+
+        <ImageButton
+            android:id="@+id/loupe"
+            android:title="Loupe"
+            android:layout_margin="10dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/loupe"
+            android:background="@null"
+            app:showAsAction="always"
+            android:gravity="center"
+            android:alpha="0.4"></ImageButton>
 
     <ImageButton
-        android:id="@+id/deco"
-        android:title="Déconnexion"
+        android:id="@+id/profil"
+        android:title="Profil"
         android:layout_margin="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_exit_to_app_black_24dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_person_black_24dp"
         android:background="@null"
         app:showAsAction="always"
-        android:gravity="center"></ImageButton>
+        android:gravity="center"
+        android:alpha="0.4"></ImageButton>
 
     </LinearLayout>
 

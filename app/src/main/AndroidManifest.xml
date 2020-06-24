@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.ResetActivity"></activity>
+        <activity android:name=".activity.ProfilActivity"></activity>
+        <activity android:name=".activity.ResetActivity" />
         <activity android:name=".activity.RechercheActivity" />
         <activity android:name=".activity.ChargementActivity">
             <intent-filter>
